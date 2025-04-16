@@ -43,14 +43,14 @@ int main() {
 
             if (f == nullptr) {
                 f = new Film(filmID);
-                g.addFilm(filmID, f);
+                g.addFilm(f);
             }
 
             Actor* a = g.findByActorName(actorName);
 
             if (a == nullptr) {
                 a = new Actor(lastName, firstName);
-                g.addActor(actorName, new Actor(lastName, firstName));
+                g.addActor(a);
             }
 
 

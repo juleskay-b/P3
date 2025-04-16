@@ -19,10 +19,14 @@ int main() {
     //Vector to keep track of films and film indices
 
     string filename = "Datasets/actors.csv";
-    fstream data(filename);
+    ifstream data(filename);
     string line;
 
-    while (std::getline(data, line)) {
+    if (!data.is_open()) {
+        cout << "Could not open file" << endl;
+    }
+
+    while (getline(data, line)) {
         stringstream ss(line);
         string value;
         vector<string> values;
@@ -35,8 +39,9 @@ int main() {
         if (values.size() == 3) {
             int filmID = stoi(values[0]);
             string name = values[1];
-            Film* f;
-            Actor* a;
+            cout << filmID << " " << name << endl;
+            Film* f = nullptr;
+            Actor* a = nullptr;
 
             if (!g.isFilm(filmID)) {
                 f = new Film(filmID);
@@ -48,7 +53,9 @@ int main() {
                 g.addActor(a);
             }
 
-            f->addActor(a);
+            if (f && a) {
+                f->addActor(a);
+            }
 
         } else {
             std::cerr << "Error: Invalid CSV format in line: " << line << std::endl;

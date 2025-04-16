@@ -5,7 +5,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <vector>
+#include <set>
 #include <string>
 #include <map>
 #include "Film.h"
@@ -20,7 +20,7 @@ using namespace std;
 class Graph {
     map<int, Film*> films; //Map with an ID and an accompanying Film Object
     map<string, Actor*> actors; //Map with a name (Last, First) and accompanying Actor Object
-    vector<pair<int, int>> edges; //Edges between films stored as a pair of IDs
+    //Each actor has a list of edges (actors they have starred in a film with)
 public:
     Graph();
     void addFilm(int id, Film* film);

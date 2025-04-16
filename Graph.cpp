@@ -3,6 +3,7 @@
 //
 
 #include "Graph.h"
+#include <iostream>
 
 Graph::Graph() {
   films = {};
@@ -15,12 +16,26 @@ void Graph::addFilm(Film* film) {
   }
 }
 
-void Graph::addActor(Actor* actor) {
-  string name = actor->getFirst() + " " + actor->getLast();
-  if (actors.find(name) == actors.end()) {
-    actors[name] = actor;
+void Graph::addActor(Actor* actor) {;
+  if (actors.find(actor->getName()) == actors.end()) {
+    actors[actor->getName()] = actor;
   }
 }
+
+bool Graph::isActor(string name) {
+  if (actors.find(name) != actors.end()) {
+    return true;
+  }
+  return false;
+}
+
+bool Graph::isFilm(int id) {
+  if (films.find(id) != films.end()) {
+    return true;
+  }
+  return false;
+}
+
 
 Film* Graph::findByID(int id) {
   //Implement search
@@ -30,3 +45,16 @@ Film* Graph::findByID(int id) {
 Actor* Graph::findByActorName(string name) {
   return nullptr;
 }
+
+void Graph::printFilms() {
+  for (auto it = films.begin(); it != films.end(); it++) {
+    cout << it->second->name << endl;
+  }
+}
+
+void Graph::printActors() {
+  for (auto it = actors.begin(); it != actors.end(); it++) {
+    cout << it->second->getName() << endl;
+  }
+}
+

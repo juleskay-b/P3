@@ -23,9 +23,8 @@ void Film::addActor(Actor* actor) {
     castSize++;
 }
 
-Actor::Actor(const string& lastName, const string& firstName) {
-    this->lastName = lastName;
-    this->firstName = firstName;
+Actor::Actor(const string& name) {
+    this->name = name;
     numFilms = 0;
     adjacent = {};
     films = {};
@@ -40,13 +39,10 @@ void Actor::addEdge(Actor *actor) {
     adjacent.insert(actor);
 }
 
-string Actor::getFirst() {
-    return firstName;
+string Actor::getName() {
+    return name;
 }
 
-string Actor::getLast() {
-    return lastName;
-}
 
 
 

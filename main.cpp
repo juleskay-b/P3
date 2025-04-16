@@ -22,8 +22,6 @@ int main() {
     fstream data(filename);
     string line;
 
-    int index = 0; //Counter to track film index
-
     while (std::getline(data, line)) {
         stringstream ss(line);
         string value;
@@ -36,23 +34,19 @@ int main() {
         // Create Film object and add it to the vector
         if (values.size() == 3) {
             int filmID = stoi(values[0]);
-            string lastName = values[1].substr(values[1].find(' '));
-            string firstName = values[1].substr(0, values[1].find(' '));
-            string actorName = lastName + ", " + firstName;
-            Film* f = g.findByID(filmID);
+            string name = values[1];
+            Film* f;
+            Actor* a;
 
-            if (f == nullptr) {
+            if (!g.isFilm(filmID)) {
                 f = new Film(filmID);
                 g.addFilm(f);
             }
 
-            Actor* a = g.findByActorName(actorName);
-
-            if (a == nullptr) {
-                a = new Actor(lastName, firstName);
+            if (!g.isActor(name)) {
+                a = new Actor(name);
                 g.addActor(a);
             }
-
 
             f->addActor(a);
 
@@ -60,6 +54,8 @@ int main() {
             std::cerr << "Error: Invalid CSV format in line: " << line << std::endl;
         }
     }
+
+    g.printActors();
 
     return 0;
 }

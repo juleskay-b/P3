@@ -28,6 +28,12 @@ public:
     Film* findByID(int id);
     Actor* findByActorName(string name);
 
+    bool isActor(string name); //Returns if an actor is already in the list
+    bool isFilm(int id); //Returns if a film is already in the list
+
+    void printFilms(); //Testing insertion
+    void printActors(); //Testing insertion
+
     //Shortest Path Algo and Helper Functions (if necessary) - Dijkstra's
     vector<Actor*> DijkstrasPath();
 

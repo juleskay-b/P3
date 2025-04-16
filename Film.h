@@ -28,8 +28,8 @@ class Actor {
     set<Actor*> adjacent; //List of actors that have starred in a movie with this actor
     set<Film*> films; //List of films this actor has starred in
 public:
-    Actor(string lastName, string firstName); //Constructor
-    void addFilmCredit(Film& film); //Adds a credit to the actor's list, and increases num films by 1
+    Actor(const string& lastName, const string& firstName); //Constructor
+    void addFilmCredit(Film *film); //Adds a credit to the actor's list, and increases num films by 1
     void addEdge(Actor* actor);
 
     string getLast();

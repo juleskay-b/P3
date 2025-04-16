@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 #include <map>
+#include <vector>
 #include "Film.h"
 using namespace std;
 
@@ -27,6 +28,12 @@ public:
     void addActor(string name, Actor* actor);
     Film* findByID(int id);
     Actor* findByActorName(string name);
+
+    //Shortest Path Algo and Helper Functions (if necessary) - Dijkstra's
+    vector<Actor*> dPath();
+
+    //Shortest Path Algo and Helper Functions (if necessary) - BFS
+    vector<Actor*> BFSPath();
 };
 
 

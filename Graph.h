@@ -5,7 +5,6 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <set>
 #include <string>
 #include <map>
 #include <vector>
@@ -13,24 +12,24 @@
 using namespace std;
 
 //The Graph Structure::
-//A film will be share an edge with another film if the two share at least one actor
-//Sharing multiple actors will have no impact on the edge
-//Film objects will store a vector of pointers to different actors
-//Likewise, actor objects will store a list of pointers to different films
+//An actor will be share an edge with another actor if the two have been in at least one film
+//The edge will be weighted by the multiplicative inverse of the total number of films the two share (1/numFilms)
+//Film objects will store a set of pointers to different actors
+//Likewise, actor objects will store a set of pointers to different films
 
 class Graph {
     map<int, Film*> films; //Map with an ID and an accompanying Film Object
-    map<string, Actor*> actors; //Map with a name (Last, First) and accompanying Actor Object
+    map<string, Actor*> actors; //Map with a name ("First Last") and accompanying Actor Object
     //Each actor has a list of edges (actors they have starred in a film with)
 public:
     Graph();
-    void addFilm(int id, Film* film);
-    void addActor(string name, Actor* actor);
+    void addFilm(Film* film);
+    void addActor(Actor* actor);
     Film* findByID(int id);
     Actor* findByActorName(string name);
 
     //Shortest Path Algo and Helper Functions (if necessary) - Dijkstra's
-    vector<Actor*> dPath();
+    vector<Actor*> DijkstrasPath();
 
     //Shortest Path Algo and Helper Functions (if necessary) - BFS
     vector<Actor*> BFSPath();

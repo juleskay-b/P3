@@ -4,6 +4,7 @@
 
 #include "Graph.h"
 #include "Film.h"
+#include "Datasets/actors.csv"
 
 #include <iostream>
 #include <fstream>
@@ -15,8 +16,6 @@ using namespace std;
 int main() {
     //Build graph from CSV
     Graph g;
-
-    //Vector to keep track of films and film indices
 
     string filename = "Datasets/actors.csv";
     ifstream data(filename);

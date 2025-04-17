@@ -3,37 +3,35 @@
 //
 
 #include "Graph.h"
+#include <cmath>
+#include <algorithm>
 #include <iostream>
+#include <queue>
 
-//Constructor - initializes an empty graph
 Graph::Graph() {
   films = {};
   actors = {};
 }
 
-//Adds a film - not a vertex, but indicates an edge between actors
-void Graph::addFilm(Film* film) { //Adds a film - not a vertex, but indicates an edge between actors
+void Graph::addFilm(Film* film) {
   if (films.find(film->id) == films.end()) {
     films[film->id] = film;
   }
 }
 
-//Adds an actor - a vertex in the graph
-void Graph::addActor(Actor* actor) {
+void Graph::addActor(Actor* actor) {;
   if (actors.find(actor->getName()) == actors.end()) {
     actors[actor->getName()] = actor;
   }
 }
 
-//Checks if an actor is already in the graph by name
-bool Graph::isActor(string name) {
+bool Graph::isActor(const string& name) {
   if (actors.find(name) != actors.end()) {
     return true;
   }
   return false;
 }
 
-//Checks if a film is already in the list by unique ID
 bool Graph::isFilm(int id) {
   if (films.find(id) != films.end()) {
     return true;
@@ -41,23 +39,32 @@ bool Graph::isFilm(int id) {
   return false;
 }
 
-//Getter of sorts - returns a film using its id, or nullptr if it doesn't exist
+
 Film* Graph::findByID(int id) {
-  if (films.find(id) != films.end()) {
-    return films[id];
+  auto it = films.find(id);
+  if (it != films.end()) {
+    return it->second;
   }
   return nullptr;
 }
 
-//Getter of sorts - returns an actor given a name, or nullptr if it doesn't exist
-Actor* Graph::findByActorName(string name) {
-  if (actors.find(name) != actors.end()) {
-    return actors[name];
+Actor* Graph::findByActorName(const string& name) {
+  auto it = actors.find(name);
+  if (it != actors.end()) {
+    return it->second;
   }
   return nullptr;
 }
 
-//Debug stuff - printing functions
+unsigned int Graph::getFilmNum() const {
+  return films.size();
+}
+
+unsigned int Graph::getActorNum() const {
+  return actors.size();
+}
+
+
 void Graph::printFilms() {
   for (auto it = films.begin(); it != films.end(); it++) {
     cout << it->second->name << endl;
@@ -70,7 +77,7 @@ void Graph::printActors() {
   }
 }
 
-void Graph::printAdjacent(string name) {
+void Graph::printAdjacent(const string& name) {
   if (actors.find(name) != actors.end()) {
     auto a = actors[name];
     for (auto it = a->getAdjacent().begin(); it != a->getAdjacent().end(); it++) {
@@ -79,7 +86,7 @@ void Graph::printAdjacent(string name) {
   }
 }
 
-void Graph::printFilms(string name) {
+void Graph::printFilms(const string& name) {
   if (actors.find(name) != actors.end()) {
     for (Film* f : actors[name]->getFilms()) {
       cout << f->id << endl;
@@ -87,3 +94,56 @@ void Graph::printFilms(string name) {
   }
 }
 
+vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
+  unordered_map<Actor*, double> distance;
+  unordered_map<Actor*, Actor*> prev;
+  priority_queue<pair<double, Actor*>, vector<pair<double, Actor*>>, greater<>> q;
+
+  for (pair<string, Actor*> pair : actors) {
+    distance[pair.second] = INFINITY;
+  }
+
+  distance[start] = 0;
+
+  q.push({0, start});
+
+  while (!q.empty()) {
+    Actor* curr = q.top().second;
+    double d = q.top().first;
+    q.pop();
+
+    if (curr == end) {
+      break;
+    }
+
+    for (pair<Actor*, int> a : curr->getAdjacent()) {
+      Actor* neighbor = a.first;
+      int numFilmsTogether = a.second;
+      double wt = 1.0/numFilmsTogether; //Prioritize actors with more films together
+      double d2 = d + wt;
+
+      if (d2 < distance[neighbor]) {
+        distance[neighbor] = d2;
+        prev[neighbor] = curr;
+        q.push({d2, neighbor});
+      }
+    }
+  }
+
+  vector<Actor*> path;
+  if (distance[end] == INFINITY) {
+    return path;
+  }
+
+  for (Actor* a = end; a != nullptr; a = prev[a]) {
+    path.push_back(a);
+  }
+
+  reverse(path.begin(), path.end());
+  return path;
+
+}
+
+vector<Actor *> Graph::BFSPath(const string &firstActor, const string &secondActor) {
+  return {};
+}

@@ -6,7 +6,7 @@
 
 Film::Film(int ID) {
     this->id = ID;
-    castSize = 0; //Might need this, idk though
+    castSize = 0;
     cast = {};
     //Add information like year, other stuff if possible
     year = 0;
@@ -17,7 +17,7 @@ void Film::addActor(Actor* actor) {
     cast.insert(actor); //Adds the actor to the cast of this film. Does nothing if actor is already in cast
     actor->addFilmCredit(this); //Adds a film credit to the actor object
     for (Actor* a : cast) { //Iterates through actors in the cast
-        if (a->getName() != actor->getName()) {
+        if (a != actor) {
             a->addEdge(actor);
             actor->addEdge(a);
         }
@@ -25,39 +25,36 @@ void Film::addActor(Actor* actor) {
     castSize++;
 }
 
-Actor::Actor(const string& name) { //Constructor
+Actor::Actor(const string& name) {
     this->name = name;
     numFilms = 0;
     adjacent = {};
     films = {};
 }
 
-//Adds a film to the films list
 void Actor::addFilmCredit(Film *film) {
-    films.insert(film);
-    numFilms++;
-}
-
-//Adds a connection to another actor, and increases the connection weight if it already exists
-void Actor::addEdge(Actor *actor) {
-    string actorName = actor->getName();
-    if (adjacent.find(actorName) != adjacent.end()) {
-        adjacent[actorName]++; //Increase the number of films instead of adding a new actor
-    } else {
-        adjacent[actorName] = 1;
+    if (films.insert(film).second) {
+        numFilms++;
     }
 }
 
-//Getters
+void Actor::addEdge(Actor *actor) {
+    if (adjacent.find(actor) != adjacent.end()) {
+        adjacent[actor]++;
+    } else {
+        adjacent[actor] = 1;
+    }
+}
+
 string Actor::getName() {
     return name;
 }
 
-unordered_map<string, int>& Actor::getAdjacent() {
+unordered_map<Actor*, int>& Actor::getAdjacent() {
     return adjacent;
 }
 
-set<Film *> &Actor::getFilms() {
+unordered_set<Film *> &Actor::getFilms() {
     return films;
 }
 

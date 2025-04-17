@@ -28,9 +28,11 @@ public:
     Film* findByID(int id);
     Actor* findByActorName(string name);
 
+    //Membership
     bool isActor(string name); //Returns if an actor is already in the list
     bool isFilm(int id); //Returns if a film is already in the list
 
+    //Debug/info
     void printFilms(); //Testing insertion
     void printActors(); //Testing insertion
     void printAdjacent(string name); //Testing edges

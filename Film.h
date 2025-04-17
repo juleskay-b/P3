@@ -32,6 +32,7 @@ public:
     void addFilmCredit(Film *film); //Adds a credit to the actor's list, and increases num films by 1
     void addEdge(Actor* actor);
 
+    //Getters
     string getName();
     unordered_map<string, int>& getAdjacent();
     set<Film*>& getFilms();

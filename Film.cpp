@@ -6,7 +6,7 @@
 
 Film::Film(int ID) {
     this->id = ID;
-    castSize = 0;
+    castSize = 0; //Might need this, idk though
     cast = {};
     //Add information like year, other stuff if possible
     year = 0;
@@ -25,27 +25,30 @@ void Film::addActor(Actor* actor) {
     castSize++;
 }
 
-Actor::Actor(const string& name) {
+Actor::Actor(const string& name) { //Constructor
     this->name = name;
     numFilms = 0;
     adjacent = {};
     films = {};
 }
 
+//Adds a film to the films list
 void Actor::addFilmCredit(Film *film) {
     films.insert(film);
     numFilms++;
 }
 
+//Adds a connection to another actor, and increases the connection weight if it already exists
 void Actor::addEdge(Actor *actor) {
     string actorName = actor->getName();
     if (adjacent.find(actorName) != adjacent.end()) {
-        adjacent[actorName]++;
+        adjacent[actorName]++; //Increase the number of films instead of adding a new actor
     } else {
         adjacent[actorName] = 1;
     }
 }
 
+//Getters
 string Actor::getName() {
     return name;
 }

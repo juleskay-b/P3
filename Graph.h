@@ -26,21 +26,25 @@ public:
     void addFilm(Film* film);
     void addActor(Actor* actor);
     Film* findByID(int id);
-    Actor* findByActorName(string name);
+    Actor* findByActorName(const string& name);
 
-    bool isActor(string name); //Returns if an actor is already in the list
+    bool isActor(const string& name); //Returns if an actor is already in the list
     bool isFilm(int id); //Returns if a film is already in the list
 
     void printFilms(); //Testing insertion
     void printActors(); //Testing insertion
-    void printAdjacent(string name); //Testing edges
-    void printFilms(string name); //Testing insertion
+    void printAdjacent(const string& name); //Testing edges
+    void printFilms(const string& name); //Testing insertion
+
+    //Stuff for data - how many actors and films are there total?
+    unsigned int getFilmNum() const;
+    unsigned int getActorNum() const;
 
     //Shortest Path Algo and Helper Functions (if necessary) - Dijkstra's
     vector<Actor*> DijkstrasPath();
 
     //Shortest Path Algo and Helper Functions (if necessary) - BFS
-    vector<Actor*> BFSPath();
+    vector<Actor*> BFSPath(const string& firstActor, const string& secondActor);
 };
 
 

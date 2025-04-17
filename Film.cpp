@@ -17,7 +17,7 @@ void Film::addActor(Actor* actor) {
     cast.insert(actor); //Adds the actor to the cast of this film. Does nothing if actor is already in cast
     actor->addFilmCredit(this); //Adds a film credit to the actor object
     for (Actor* a : cast) { //Iterates through actors in the cast
-        if (a->getName() != actor->getName()) {
+        if (a != actor) {
             a->addEdge(actor);
             actor->addEdge(a);
         }
@@ -33,16 +33,16 @@ Actor::Actor(const string& name) {
 }
 
 void Actor::addFilmCredit(Film *film) {
-    films.insert(film);
-    numFilms++;
+    if (films.insert(film).second) {
+        numFilms++;
+    }
 }
 
 void Actor::addEdge(Actor *actor) {
-    string actorName = actor->getName();
-    if (adjacent.find(actorName) != adjacent.end()) {
-        adjacent[actorName]++;
+    if (adjacent.find(actor) != adjacent.end()) {
+        adjacent[actor]++;
     } else {
-        adjacent[actorName] = 1;
+        adjacent[actor] = 1;
     }
 }
 
@@ -50,11 +50,11 @@ string Actor::getName() {
     return name;
 }
 
-unordered_map<string, int>& Actor::getAdjacent() {
+unordered_map<Actor*, int>& Actor::getAdjacent() {
     return adjacent;
 }
 
-set<Film *> &Actor::getFilms() {
+unordered_set<Film *> &Actor::getFilms() {
     return films;
 }
 

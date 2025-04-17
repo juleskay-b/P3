@@ -38,11 +38,16 @@ bool Graph::isFilm(int id) {
 
 
 Film* Graph::findByID(int id) {
-  //Implement search
+  if (films.find(id) != films.end()) {
+    return films[id];
+  }
   return nullptr;
 }
 
 Actor* Graph::findByActorName(string name) {
+  if (actors.find(name) != actors.end()) {
+    return actors[name];
+  }
   return nullptr;
 }
 

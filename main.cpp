@@ -4,14 +4,17 @@
 
 #include "Graph.h"
 #include "Film.h"
-#include "Datasets/actors.csv"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 using namespace std;
+
+//Trim string - helps remove '' and # from CSV
+//From https://gist.github.com/letiantian/a51003ae3f9896ee68d8c51f26c9312f
 
 int main() {
     //Build graph from CSV
@@ -21,47 +24,51 @@ int main() {
     ifstream data(filename);
     string line;
 
+    int counter = 0;
+
     if (!data.is_open()) {
         cout << "Could not open file" << endl;
+        return 0;
     }
 
-    while (getline(data, line)) {
+    getline(data, line);
+
+    while (getline(data, line) && counter <= 100000) {
+        string stringID, actorName;
         stringstream ss(line);
-        string value;
-        vector<string> values;
 
-        while (getline(ss, value, ',')) {
-            values.push_back(value);
-        }
+        if (getline(ss, stringID, ',') && getline(ss, actorName, ',')) {
 
-        // Create Film object and add it to the vector
-        if (values.size() == 3) {
-            int filmID = stoi(values[0]);
-            string name = values[1];
-            cout << filmID << " " << name << endl;
+        try {
+            int filmID = stoi(stringID);
+
             Film* f = nullptr;
             Actor* a = nullptr;
 
             if (!g.isFilm(filmID)) {
                 f = new Film(filmID);
                 g.addFilm(f);
+            } else {
+                f = g.findByID(filmID);
             }
 
-            if (!g.isActor(name)) {
-                a = new Actor(name);
+            if (!g.isActor(actorName)) {
+                a = new Actor(actorName);
                 g.addActor(a);
+            } else {
+                a = g.findByActorName(actorName);
             }
 
             if (f && a) {
                 f->addActor(a);
             }
-
+        } catch (const invalid_argument& e) {
+            cerr << "Something went wrong with ID " << stringID << endl;
+        }
         } else {
             std::cerr << "Error: Invalid CSV format in line: " << line << std::endl;
         }
     }
-
-    g.printActors();
 
     return 0;
 }

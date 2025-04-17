@@ -102,9 +102,10 @@ int menu(Graph& g) {
     }
 }
 
+//Main function: Make a separate function to read file and create objects?
 int main() {
     //Build graph from CSV
-    auto start{chrono::steady_clock::now()};
+    auto start{chrono::steady_clock::now()}; //Timer for building graph - Starts here
 
     Graph g;
 
@@ -121,7 +122,7 @@ int main() {
 
     getline(data, line);
 
-    while (getline(data, line) && count <= 500000) {
+    while (getline(data, line) && count <= 100000) {
         string stringID, actorName;
         stringstream ss(line);
 
@@ -168,7 +169,7 @@ int main() {
     cout << " seconds." << endl;
     cout << "There are " << g.getActorNum() << " actors and " << g.getFilmNum() << " films." << endl;
 
-    menu(g);
+    menu(g); //Displays a menu for searching - CLI testing, mostly
 
     return 0;
 }

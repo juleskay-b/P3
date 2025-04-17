@@ -70,5 +70,8 @@ int main() {
         }
     }
 
+    g.printAdjacent("Pedro Pascal");
+    g.printFilms("Pedro Pascal");
+
     return 0;
 }

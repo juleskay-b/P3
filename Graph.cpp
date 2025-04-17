@@ -63,3 +63,19 @@ void Graph::printActors() {
   }
 }
 
+void Graph::printAdjacent(string name) {
+  if (actors.find(name) != actors.end()) {
+    for (Actor* a : actors[name]->getAdjacent()) {
+      cout << a->getName() << endl;
+    }
+  }
+}
+
+void Graph::printFilms(string name) {
+  if (actors.find(name) != actors.end()) {
+    for (Film* f : actors[name]->getFilms()) {
+      cout << f->id << endl;
+    }
+  }
+}
+

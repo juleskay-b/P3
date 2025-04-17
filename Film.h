@@ -32,6 +32,8 @@ public:
     void addEdge(Actor* actor);
 
     string getName();
+    set<Actor*>& getAdjacent();
+    set<Film*>& getFilms();
 };
 
 

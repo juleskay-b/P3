@@ -33,6 +33,8 @@ public:
 
     void printFilms(); //Testing insertion
     void printActors(); //Testing insertion
+    void printAdjacent(string name); //Testing edges
+    void printFilms(string name); //Testing insertion
 
     //Shortest Path Algo and Helper Functions (if necessary) - Dijkstra's
     vector<Actor*> DijkstrasPath();

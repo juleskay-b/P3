@@ -41,7 +41,7 @@ public:
     unsigned int getActorNum() const;
 
     //Shortest Path Algo and Helper Functions (if necessary) - Dijkstra's
-    vector<Actor*> DijkstrasPath();
+    vector<Actor*> DijkstrasPath(Actor* start, Actor* end);
 
     //Shortest Path Algo and Helper Functions (if necessary) - BFS
     vector<Actor*> BFSPath(const string& firstActor, const string& secondActor);

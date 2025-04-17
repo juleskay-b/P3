@@ -3,6 +3,8 @@
 //
 
 #include "Graph.h"
+#include <cmath>
+#include <algorithm>
 #include <iostream>
 #include <queue>
 
@@ -92,41 +94,56 @@ void Graph::printFilms(const string& name) {
   }
 }
 
-vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActor) {
-  //Getting Actor names by input and then putting it into the two actor objects
-  Actor* actor_one = findByActorName(firstActor);
-  Actor* actor_two = findByActorName(secondActor);
+vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
+  unordered_map<Actor*, double> distance;
+  unordered_map<Actor*, Actor*> prev;
+  priority_queue<pair<double, Actor*>, vector<pair<double, Actor*>>, greater<>> q;
 
-  //visited are the actor objects we found
-  //toVisit are the actor objects we still need to go through
-  unordered_set<Actor*> visited;
-  queue<Actor*> toVisit;
-
-  //Making sure the user puts in input for both names, if not function returns empty vector
-  if (!actor_one || !actor_two) {
-    return {};
+  for (pair<string, Actor*> pair : actors) {
+    distance[pair.second] = INFINITY;
   }
 
-  //Inserting first actor in what's been visited
-  //Inserting first actor in what we currently need to visit
-  visited.insert(actor_one);
-  toVisit.push(actor_one);
+  distance[start] = 0;
 
-  //Going to update the queue and visit other stars until the queue is empty
-  while(!toVisit.empty()) {
-    Actor* current = toVisit.front();
-    toVisit.pop();
+  q.push({0, start});
 
+  while (!q.empty()) {
+    Actor* curr = q.top().second;
+    double d = q.top().first;
+    q.pop();
 
-    //Going to visit other co-stars
-    for (auto movieStar : current->getAdjacent()) {
-      Actor* star = findByActorName(movieStar.first->getName());
-      if (visited.find(star) == visited.end()) {
-        visited.insert(star);
-        toVisit.push(star);
+    if (curr == end) {
+      break;
+    }
+
+    for (pair<Actor*, int> a : curr->getAdjacent()) {
+      Actor* neighbor = a.first;
+      int numFilmsTogether = a.second;
+      double wt = 1.0/numFilmsTogether; //Prioritize actors with more films together
+      double d2 = d + wt;
+
+      if (d2 < distance[neighbor]) {
+        distance[neighbor] = d2;
+        prev[neighbor] = curr;
+        q.push({d2, neighbor});
       }
     }
   }
 
+  vector<Actor*> path;
+  if (distance[end] == INFINITY) {
+    return path;
+  }
+
+  for (Actor* a = end; a != nullptr; a = prev[a]) {
+    path.push_back(a);
+  }
+
+  reverse(path.begin(), path.end());
+  return path;
+
+}
+
+vector<Actor *> Graph::BFSPath(const string &firstActor, const string &secondActor) {
   return {};
 }

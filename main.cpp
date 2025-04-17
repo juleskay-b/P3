@@ -24,8 +24,6 @@ int main() {
     ifstream data(filename);
     string line;
 
-    int counter = 0;
-
     if (!data.is_open()) {
         cout << "Could not open file" << endl;
         return 0;
@@ -33,7 +31,7 @@ int main() {
 
     getline(data, line);
 
-    while (getline(data, line) && counter <= 100000) {
+    while (getline(data, line)) {
         string stringID, actorName;
         stringstream ss(line);
 
@@ -70,8 +68,7 @@ int main() {
         }
     }
 
-    g.printAdjacent("Pedro Pascal");
-    g.printFilms("Pedro Pascal");
+    g.printAdjacent("Zendaya");
 
     return 0;
 }

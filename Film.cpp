@@ -38,14 +38,19 @@ void Actor::addFilmCredit(Film *film) {
 }
 
 void Actor::addEdge(Actor *actor) {
-    adjacent.insert(actor);
+    string actorName = actor->getName();
+    if (adjacent.find(actorName) != adjacent.end()) {
+        adjacent[actorName]++;
+    } else {
+        adjacent[actorName] = 1;
+    }
 }
 
 string Actor::getName() {
     return name;
 }
 
-set<Actor*>& Actor::getAdjacent() {
+unordered_map<string, int>& Actor::getAdjacent() {
     return adjacent;
 }
 

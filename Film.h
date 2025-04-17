@@ -7,6 +7,7 @@
 
 #include <string>
 #include <set>
+#include <unordered_map>
 class Actor;
 using namespace std;
 
@@ -24,7 +25,7 @@ struct Film {
 class Actor {
     string name;
     int numFilms; //The number of films the actor has appeared in for sorting purposes
-    set<Actor*> adjacent; //List of actors that have starred in a movie with this actor
+    unordered_map<string, int> adjacent; //List of actors that have starred in a movie with this actor plus a weight
     set<Film*> films; //List of films this actor has starred in
 public:
     Actor(const string& name); //Constructor
@@ -32,7 +33,7 @@ public:
     void addEdge(Actor* actor);
 
     string getName();
-    set<Actor*>& getAdjacent();
+    unordered_map<string, int>& getAdjacent();
     set<Film*>& getFilms();
 };
 

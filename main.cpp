@@ -4,62 +4,88 @@
 
 #include "Graph.h"
 #include "Film.h"
+#include "UI.h"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <chrono>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
+
+//Main function: Make a separate function to read file and create objects?
 int main() {
     //Build graph from CSV
+    auto start{chrono::steady_clock::now()}; //Timer for building graph - Starts here
+
     Graph g;
 
-    //Vector to keep track of films and film indices
-
     string filename = "Datasets/actors.csv";
-    fstream data(filename);
+    ifstream data(filename);
     string line;
 
-    int index = 0; //Counter to track film index
+    int count = 0;
 
-    while (std::getline(data, line)) {
+    if (!data.is_open()) {
+        cout << "Could not open file" << endl;
+        return 0;
+    }
+
+    getline(data, line);
+
+    while (getline(data, line) && count <= 100000) {
+        string stringID, actorName;
         stringstream ss(line);
-        string value;
-        vector<string> values;
 
-        while (getline(ss, value, ',')) {
-            values.push_back(value);
-        }
+        count++;
 
-        // Create Film object and add it to the vector
-        if (values.size() == 3) {
-            int filmID = stoi(values[0]);
-            string lastName = values[1].substr(values[1].find(' '));
-            string firstName = values[1].substr(0, values[1].find(' '));
-            string actorName = lastName + ", " + firstName;
-            Film* f = g.findByID(filmID);
+        if (getline(ss, stringID, ',') && getline(ss, actorName, ',')) {
 
-            if (f == nullptr) {
+        try {
+            int filmID = stoi(stringID);
+
+            Film* f = nullptr;
+            Actor* a = nullptr;
+
+            f = g.findByID(filmID);
+            if (!f) {
                 f = new Film(filmID);
-                g.addFilm(filmID, f);
+                g.addFilm(f);
             }
 
-            Actor* a = g.findByActorName(actorName);
-
-            if (a == nullptr) {
-                a = new Actor(lastName, firstName);
-                g.addActor(actorName, new Actor(lastName, firstName));
+            a = g.findByActorName(actorName);
+            if (!a) {
+                a = new Actor(actorName);
+                g.addActor(a);
             }
 
+            if (f && a) {
+                f->addActor(a);
+            }
 
-            f->addActor(a);
-
+        } catch (const invalid_argument& e) {
+            cerr << "Something went wrong with ID " << stringID << endl;
+        }
         } else {
             std::cerr << "Error: Invalid CSV format in line: " << line << std::endl;
         }
     }
+
+    auto finish{chrono::steady_clock::now()};
+
+    chrono::duration<double> elapsed_seconds{finish - start};
+
+    cout << "Graph built in ";
+    cout << elapsed_seconds.count();
+    cout << " seconds." << endl;
+    cout << "There are " << g.getActorNum() << " actors and " << g.getFilmNum() << " films." << endl;
+
+    //automated UI yasss
+        UI ui(g);
+        ui.run();
 
     return 0;
 }

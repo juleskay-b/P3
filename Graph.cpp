@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <queue>
+#include <set>
 
 Graph::Graph() {
   films = {};
@@ -144,6 +145,58 @@ vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
 
 }
 
-vector<Actor *> Graph::BFSPath(const string &firstActor, const string &secondActor) {
-  return {};
+vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActor) {
+  //Getting Actor names by input and then putting it into the two actor objects
+  Actor* actor_one = findByActorName(firstActor);
+  Actor* actor_two = findByActorName(secondActor);
+
+  //visited are the actor objects we found
+  //toVisit are the actor objects we still need to go through
+  set<Actor*> visited;
+  queue<Actor*> toVisit;
+  unordered_map<Actor*, Actor*> prev;
+
+  //Making sure the user puts in input for both names, if not function returns empty vector
+  if (!actor_one || !actor_two) {
+    return {};
+  }
+
+  //Inserting first actor in what's been visited
+  //Inserting first actor in what we currently need to visit
+  visited.insert(actor_one);
+  toVisit.push(actor_one);
+
+  //Going to update the queue and visit other stars until the queue is empty
+  while(!toVisit.empty()) {
+    Actor* current = toVisit.front();
+    toVisit.pop();
+
+    //This is if we find the second actor, we break out of the loop and start to get the path
+    if (actor_two == current) {
+      break;
+    }
+
+    //Going to visit other co-stars
+    for (auto movieStar : current->getAdjacent()) {
+      Actor* star = movieStar.first;
+      if (visited.find(star) == visited.end()) {
+        visited.insert(star);
+        prev[star] = current;
+        toVisit.push(star);
+      }
+    }
+  }
+
+  //Vector to put actors that we get while trying to reach the second actor (the end)
+  vector<Actor*> path;
+  if (visited.find(actor_two) == visited.end()) {
+    path.push_back(actor_two);
+  }
+
+  for (Actor* at = actor_two; at != nullptr; at = prev[at]) {
+    path.push_back(at);
+  }
+
+  reverse(path.begin(), path.end());
+  return path;
 }

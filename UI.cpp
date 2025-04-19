@@ -5,128 +5,121 @@
 #include "UI.h"
 #include <iostream>
 #include <chrono>
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 
-#include <OpenGL/gl3.h>       // for glClearColor
 using namespace std;
 
-UI::UI(Graph &g) : graph(g) {}
+UI::UI(Graph& g) : graph(g) {}
 
-//added window popup w/ ImGui (trying it)
-void UI::run(GLFWwindow* window) {
-    while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+void UI::run() {
+    window.setWindowTitle("Star Fishing");
+    window.resize(800, 500);
 
-        ImGui::Begin("Star Fishing GUI");
-        ImGui::Text("Now it works!!!");
-        ImGui::End();
+    // ==== MAIN LAYOUT ==== (horizontal)
+    QHBoxLayout* mainLayout = new QHBoxLayout();
 
-        ImGui::Render();
-        int w, h;
-        glfwGetFramebufferSize(window, &w, &h);
-        glViewport(0, 0, w, h);
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        glfwSwapBuffers(window);
-    }
-}
+    // ==== LEFT PANEL ==== (vertical)
+    QVBoxLayout* leftPanel = new QVBoxLayout();
 
+    //title
+    QLabel* title = new QLabel("Find Shortest Path");
+    title->setAlignment(Qt::AlignCenter);
+    title->setStyleSheet("font-size: 18px; font-weight: bold;");
+    leftPanel->addWidget(title);
 
-// void UI::run() {
-//     while (true) {
-//         showMenu();
-//         string choice;
-//         getline(cin, choice);
-//
-//         if (choice == "1") {
-//             findShortestPath();
-//         }
-//         else if (choice == "2") {
-//             showActorFilms();
-//         }
-//         else if (choice == "3") {
-//             showCoStars();
-//         }
-//         else if (choice == "4") {
-//             cout << "Byeeeeeee!" << endl;
-//             break;
-//         }
-//         else {
-//             cout << "You done goofed up on the spelling!" << endl;
-//         }
-//     }
-// }
+    //radio (small,circular) buttons for algorithm selection
+    QGroupBox* algoGroup = new QGroupBox("Choose Algorithm");
+    QVBoxLayout* algoLayout = new QVBoxLayout();
+    QRadioButton* bfsRadio = new QRadioButton("BFS");
+    QRadioButton* dijkstraRadio = new QRadioButton("Dijkstra");
+    bfsRadio->setChecked(true);
+    algoLayout->addWidget(bfsRadio);
+    algoLayout->addWidget(dijkstraRadio);
+    algoGroup->setLayout(algoLayout);
+    leftPanel->addWidget(algoGroup);
 
-void UI::showMenu() {
-    cout << "+++ Star Fishing +++" << endl;
-    cout << "1. Find shortest path between two actors" << endl;
-    cout << "2. Show all films an actor was in" << endl;
-    cout << "3. Show all co-stars of an actor" << endl;
-    cout << "4. Quit" << endl;
-}
+    //stats label (placeholder for now)
+    QLabel* statsLabel = new QLabel("Time to complete:\nTotal connections:\nAlgorithm type:");
+    statsLabel->setWordWrap(true);
+    statsLabel->setStyleSheet("margin-top: 15px;");
+    leftPanel->addWidget(statsLabel);
+    leftPanel->addStretch();
 
-void UI::findShortestPath() {
-    string a,b;
-    cout <<"Enter the first actor's name: ";
-    getline(cin,a);
-    cout <<"Enter the second actor's name: ";
-    getline(cin,b);
+    // ==== RIGHT PANEL ==== (vertical)
+    QVBoxLayout* rightPanel = new QVBoxLayout();
 
-    Actor* begin = graph.findByActorName(a);
-    Actor* end = graph.findByActorName(b);
+    //input row
+    QHBoxLayout* inputRow = new QHBoxLayout();
+    QLineEdit* actor1Input = new QLineEdit();
+    actor1Input->setPlaceholderText("Actor One");
+    QLineEdit* actor2Input = new QLineEdit();
+    actor2Input->setPlaceholderText("Actor Two");
+    inputRow->addWidget(actor1Input);
+    inputRow->addWidget(actor2Input);
+    rightPanel->addLayout(inputRow);
 
-    if (!begin) {
-        cout << "Couldn't find " << a << " in list." << endl;
-        return;
-    }
+    //search button
+    QPushButton* searchButton = new QPushButton("Find Shortest Path");
+    rightPanel->addWidget(searchButton);
 
-    if (!end) {
-        cout << "Couldn't find " << b << " in list." << endl;
-        return;
-    }
+    //result label
+    QLabel* resultLabel = new QLabel("Result will appear here...");
+    resultLabel->setWordWrap(true);
+    resultLabel->setAlignment(Qt::AlignTop);
+    resultLabel->setMinimumHeight(200);
+    resultLabel->setStyleSheet("color: #336; background-color: #eee; padding: 10px; border: 1px solid #ccc;");
+    rightPanel->addWidget(resultLabel);
+    rightPanel->addStretch();
 
-    cout << "Choose search algorithm: (1) BFS  (2) Dijkstra: ";
-    string algo;
-    getline(cin, algo);
+    //add panels to main layout
+    mainLayout->addLayout(leftPanel, 1);
+    mainLayout->addLayout(rightPanel, 3);
+    window.setLayout(mainLayout);
+    window.show();
 
-    vector<Actor*> path;
-    auto start = chrono::steady_clock::now();
+    // ==== BUTTON LOGIC ==== //subject to change
+    QObject::connect(searchButton, &QPushButton::clicked,[this, actor1Input, actor2Input, resultLabel, bfsRadio, dijkstraRadio]() {
+        string actor1 = actor1Input->text().toStdString();
+        string actor2 = actor2Input->text().toStdString();
 
-    if (algo == "1") {
-        path = graph.BFSPath(a, b);
-    }
-    else if (algo == "2") {
-        path = graph.DijkstrasPath(begin, end);
-    }
-    else {
-        cout << "Alright buddy choose for real this time." << endl;
-        return;
-    }
-
-    auto finish = chrono::steady_clock::now();
-    chrono::duration<double> elapsed = finish - start;
-    cout << "Search took " << elapsed.count() << " seconds." << endl;
-
-    if (path.empty()) {
-        cout << "No path found." << endl;
-    } else {
-        cout << "** Shortest path: ";
-        for (int i = 0; i < path.size(); ++i) {
-            cout << path[i]->getName();
-            if (i != path.size() - 1) {
-                cout << " -> ";
-            }
+        if (!graph.isActor(actor1) || !graph.isActor(actor2)) {
+            resultLabel->setText("One or both actors not found.");
+            return;
         }
-        cout << endl;
-    }
+
+        vector<Actor*> path;
+        QString algoUsed;
+
+        if (bfsRadio->isChecked()) {
+            path = graph.BFSPath(actor1, actor2);
+            algoUsed = "BFS";
+        } else if (dijkstraRadio->isChecked()) {
+            Actor* a1 = graph.findByActorName(actor1);
+            Actor* a2 = graph.findByActorName(actor2);
+            if (!a1 || !a2) {
+                resultLabel->setText("One or both actors not found.");
+                return;
+            }
+            path = graph.DijkstrasPath(a1, a2);
+            algoUsed = "Dijkstra";
+        }
+
+        if (path.empty()) {
+            resultLabel->setText("No path found!");
+        } else {
+            QString result = algoUsed + " Path:\n";
+            for (int i = 0; i < path.size(); ++i) {
+                result += QString::fromStdString(path[i]->getName());
+                if (i < path.size() - 1) result += " → ";
+            }
+            resultLabel->setText(result);
+        }
+    });
 }
 
+
+
+
+//maybe useful later
 void UI::showActorFilms() {
     string name;
     cout << "Enter the actor's name: ";

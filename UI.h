@@ -5,15 +5,24 @@
 #ifndef UI_H
 #define UI_H
 #include "Graph.h"
-#include <GLFW/glfw3.h> //added for mac (ImGui)
+
 #include <string>
+//qt stuff let's gooooo and see what happens
+#include <QWidget>
+#include <QPushButton>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QApplication>
+#include <QGroupBox>
+#include <QRadioButton>
+
 class UI {
     Graph& graph;
+    QWidget window;
     public:
     UI(Graph& graph);
-    void run(GLFWwindow* window);
-    void showMenu();
-    void findShortestPath();
+    void run();
     void showActorFilms();
     void showCoStars();
 };

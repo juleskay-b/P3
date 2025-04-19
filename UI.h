@@ -5,12 +5,13 @@
 #ifndef UI_H
 #define UI_H
 #include "Graph.h"
+#include <GLFW/glfw3.h> //added for mac (ImGui)
 #include <string>
 class UI {
     Graph& graph;
     public:
     UI(Graph& graph);
-    void run();
+    void run(GLFWwindow* window);
     void showMenu();
     void findShortestPath();
     void showActorFilms();

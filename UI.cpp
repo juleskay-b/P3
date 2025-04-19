@@ -5,34 +5,63 @@
 #include "UI.h"
 #include <iostream>
 #include <chrono>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+#include <OpenGL/gl3.h>       // for glClearColor
 using namespace std;
 
 UI::UI(Graph &g) : graph(g) {}
 
-void UI::run() {
-    while (true) {
-        showMenu();
-        string choice;
-        getline(cin, choice);
+//added window popup w/ ImGui (trying it)
+void UI::run(GLFWwindow* window) {
+    while (!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
-        if (choice == "1") {
-            findShortestPath();
-        }
-        else if (choice == "2") {
-            showActorFilms();
-        }
-        else if (choice == "3") {
-            showCoStars();
-        }
-        else if (choice == "4") {
-            cout << "Byeeeeeee!" << endl;
-            break;
-        }
-        else {
-            cout << "You done goofed up on the spelling!" << endl;
-        }
+        ImGui::Begin("Star Fishing GUI");
+        ImGui::Text("Now it works!!!");
+        ImGui::End();
+
+        ImGui::Render();
+        int w, h;
+        glfwGetFramebufferSize(window, &w, &h);
+        glViewport(0, 0, w, h);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        glfwSwapBuffers(window);
     }
 }
+
+
+// void UI::run() {
+//     while (true) {
+//         showMenu();
+//         string choice;
+//         getline(cin, choice);
+//
+//         if (choice == "1") {
+//             findShortestPath();
+//         }
+//         else if (choice == "2") {
+//             showActorFilms();
+//         }
+//         else if (choice == "3") {
+//             showCoStars();
+//         }
+//         else if (choice == "4") {
+//             cout << "Byeeeeeee!" << endl;
+//             break;
+//         }
+//         else {
+//             cout << "You done goofed up on the spelling!" << endl;
+//         }
+//     }
+// }
 
 void UI::showMenu() {
     cout << "+++ Star Fishing +++" << endl;

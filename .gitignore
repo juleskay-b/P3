@@ -1,0 +1,15 @@
+# ignore CLion build files
+cmake-build-debug/
+.idea/
+
+# ignore ImGui
+external/imgui/
+
+# ignore compiled binaries
+*.o
+*.obj
+*.exe
+*.out
+*.app
+Project3
+Project3.exe

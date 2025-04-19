@@ -2,6 +2,10 @@
 cmake-build-debug/
 .idea/
 
+# ignore datasets
+Datasets/
+*.csv
+
 # ignore ImGui
 external/imgui/
 
@@ -13,3 +17,4 @@ external/imgui/
 *.app
 Project3
 Project3.exe
+

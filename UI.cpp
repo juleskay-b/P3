@@ -112,6 +112,9 @@ void UI::run() {
             return;
         }
 
+        //start pathfinding time
+        auto start = chrono::high_resolution_clock::now();
+
         vector<Actor*> path;
         QString algoUsed;
 
@@ -130,16 +133,29 @@ void UI::run() {
             algoUsed = "Dijkstra";
         }
 
+        //stop pathfinding
+        auto end = chrono::high_resolution_clock::now();
+        chrono::duration<double> elapsed = end - start;
+
+
         //display path text in result label
         if (path.empty()) {
             resultLabel->setText("No path found!");
-        } else {
+        }
+        else {
             QString result = algoUsed + " Path:\n";
             for (int i = 0; i < path.size(); ++i) {
                 result += QString::fromStdString(path[i]->getName());
                 if (i < path.size() - 1) result += " → ";
             }
             resultLabel->setText(result);
+
+            //update the stats
+            QString statsText;
+            statsText += "Time to complete: " + QString::number(elapsed.count(), 'f', 6) + " seconds\n";
+            statsText += "Total connections: " + QString::number(path.size() - 1) + "\n";
+            statsText += "Algorithm type: " + algoUsed;
+            statsLabel->setText(statsText);
         }
 
         //to clear previous visual

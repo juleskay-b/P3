@@ -5,6 +5,14 @@
 #include "UI.h"
 #include <iostream>
 #include <chrono>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QGraphicsEllipseItem>
+#include <QGraphicsLineItem>
+#include <QGraphicsTextItem>
+#include <cstdlib>
+#include <ctime>
+
 
 using namespace std;
 
@@ -38,11 +46,11 @@ void UI::run() {
     leftPanel->addWidget(algoGroup);
 
     //stats label (placeholder for now)
-    QLabel* statsLabel = new QLabel("Time to complete:\nTotal connections:\nAlgorithm type:");
+    QLabel* statsLabel = new QLabel("Time to complete:\nTotal connections:\n");
     statsLabel->setWordWrap(true);
     statsLabel->setStyleSheet("margin-top: 15px;");
     leftPanel->addWidget(statsLabel);
-    leftPanel->addStretch();
+    leftPanel->addStretch(); //pushing content to top
 
     // ==== RIGHT PANEL ==== (vertical)
     QVBoxLayout* rightPanel = new QVBoxLayout();
@@ -61,7 +69,11 @@ void UI::run() {
     QPushButton* searchButton = new QPushButton("Find Shortest Path");
     rightPanel->addWidget(searchButton);
 
-    //result label
+    //reset button
+    QPushButton* clearButton = new QPushButton("Clear");
+    rightPanel->addWidget(clearButton);
+
+    //result label text (might remove later we'll see)
     QLabel* resultLabel = new QLabel("Result will appear here...");
     resultLabel->setWordWrap(true);
     resultLabel->setAlignment(Qt::AlignTop);
@@ -70,17 +82,31 @@ void UI::run() {
     rightPanel->addWidget(resultLabel);
     rightPanel->addStretch();
 
-    //add panels to main layout
+    // === VISUAL PATH VIEW === //
+    QGraphicsScene* scene = new QGraphicsScene();
+    QGraphicsView* view = new QGraphicsView(scene);
+    view->setMinimumHeight(200);
+    view->setStyleSheet("background-color: white; border: 1px solid #ccc;");
+    rightPanel->addWidget(view);
+    rightPanel->addStretch();
+
+    // ==== FINALIZE LAYOUT ==== //
     mainLayout->addLayout(leftPanel, 1);
     mainLayout->addLayout(rightPanel, 3);
     window.setLayout(mainLayout);
     window.show();
 
-    // ==== BUTTON LOGIC ==== //subject to change
-    QObject::connect(searchButton, &QPushButton::clicked,[this, actor1Input, actor2Input, resultLabel, bfsRadio, dijkstraRadio]() {
+    // ==== RANDOMNESS SETUP ==== //
+    srand(time(nullptr)); //generates random nums for positioning of actor nodes (kinda like a constellation....)
+
+    // ==== BUTTON(S) LOGIC ==== //
+    //search button
+    QObject::connect(searchButton, &QPushButton::clicked,[=]() {
+
         string actor1 = actor1Input->text().toStdString();
         string actor2 = actor2Input->text().toStdString();
 
+        //validate input
         if (!graph.isActor(actor1) || !graph.isActor(actor2)) {
             resultLabel->setText("One or both actors not found.");
             return;
@@ -92,7 +118,8 @@ void UI::run() {
         if (bfsRadio->isChecked()) {
             path = graph.BFSPath(actor1, actor2);
             algoUsed = "BFS";
-        } else if (dijkstraRadio->isChecked()) {
+        }
+        else if (dijkstraRadio->isChecked()) {
             Actor* a1 = graph.findByActorName(actor1);
             Actor* a2 = graph.findByActorName(actor2);
             if (!a1 || !a2) {
@@ -103,6 +130,7 @@ void UI::run() {
             algoUsed = "Dijkstra";
         }
 
+        //display path text in result label
         if (path.empty()) {
             resultLabel->setText("No path found!");
         } else {
@@ -113,6 +141,45 @@ void UI::run() {
             }
             resultLabel->setText(result);
         }
+
+        //to clear previous visual
+        scene->clear();
+
+        //draw new one
+         int width = 600;
+         int height = 200;
+         int nodeSize = 30;
+         QPoint lastCenter;
+
+         for (int i = 0; i < path.size(); ++i) {
+             int x = rand() % width;
+             int y = rand() % height;
+
+             //draw node
+             scene->addEllipse(x, y, nodeSize, nodeSize, QPen(Qt::black), QBrush(QColor("#A3B18A")));
+
+             //actor name above the nodes
+             QGraphicsTextItem* label = scene->addText(QString::fromStdString(path[i]->getName()));
+             label->setPos(x, y - 20);
+             label->setDefaultTextColor(Qt::black);
+
+             //draw line from previous node
+             if (i > 0) {
+                 scene->addLine(lastCenter.x() + nodeSize / 2, lastCenter.y() + nodeSize / 2,
+                                x + nodeSize / 2, y + nodeSize / 2,
+                                QPen(Qt::black));
+             }
+
+             lastCenter = QPoint(x, y);
+         }
+    });
+
+    //reset button functionality
+    QObject::connect(clearButton, &QPushButton::clicked, [=]() {
+        actor1Input->clear();
+        actor2Input->clear();
+        resultLabel->setText("Result will appear here...");
+        scene->clear();
     });
 }
 

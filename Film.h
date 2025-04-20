@@ -18,7 +18,7 @@ struct Film {
     int castSize; //The number of credited actors for the film for sorting purposes
     unordered_set<Actor*> cast; //A vector of the actors credited in the film, sorted by number of credits
 
-    Film(int ID); //Consructor
+    Film(int ID); //Constructor
     void addActor(Actor*); //Adds an actor to the cast list
 };
 

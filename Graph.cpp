@@ -80,7 +80,7 @@ void Graph::printActors() {
 void Graph::printAdjacent(const string& name) {
   if (actors.find(name) != actors.end()) {
     auto a = actors[name];
-    for (auto& pair : a->getAdjacent()) {  //tweaked to display actor names :)
+    for (auto& pair : a->getAdjacent()) {  //tweaked to display actor name
       Actor* coStar = pair.first;
       int numMovies = pair.second;
       cout << "+ " << coStar->getName() << " (" << numMovies << " movie(s))" << endl;
@@ -91,21 +91,8 @@ void Graph::printAdjacent(const string& name) {
 void Graph::printFilms(const string& name) {
   if (actors.find(name) != actors.end()) {
     for (Film* f : actors[name]->getFilms()) {
-      cout << "+ Film ID: " << f->id;
-
-      if (!f->name.empty()) {
-        cout << " | Title: " << f->name;
-      }
-
-      if (f->year != 0) {
-        cout << " | Year: " << f->year;
-      }
-
-      cout << endl;
+      cout << f->id << endl;
     }
-  }
-  else {
-    cout << "Actor not found." << endl;
   }
 }
 

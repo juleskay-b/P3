@@ -4,6 +4,7 @@
 
 #include "Graph.h"
 #include "Film.h"
+#include "UI.h"
 
 #include <iostream>
 #include <fstream>
@@ -12,98 +13,14 @@
 #include <chrono>
 #include <vector>
 #include <algorithm>
+
 using namespace std;
 
-//Debug functions: run search from command line
-int menu(Graph& g) {
-    int option = -1;
-    while (true) {
-        cout << endl << "What would you like to do?" << endl;
-        cout << "1. Search" << endl;
-        cout << "0. Exit" << endl;
-        cin >> option;
-        cin.ignore();
-
-        if (option == 1) {
-            string a, b; //Name for start and finish on path
-
-            cout << "Enter first actor name:" << endl;
-            getline(cin, a);
-            cout << "Enter second actor name:" << endl;
-            getline(cin, b);
-
-            Actor* begin = g.findByActorName(a);
-            Actor* end = g.findByActorName(b);
-
-            if (!begin) {
-                cout << "Could not find " << a << " in list." << endl;
-            }
-
-            if (!end) {
-                cout << "Could not find " << b << " in list." << endl;
-                continue;
-            }
-
-            cout << endl << "Which search would you like to use?" << endl;
-            cout << "1. BFS" << endl;
-            cout << "2. Dijkstra's" << endl;
-            cout << "0. Exit" << endl;
-            cin >> option;
-
-            if (option == 1) {
-                auto start = chrono::steady_clock::now();
-
-                vector<Actor*> path;
-
-                if (begin && end) {
-                    path = g.BFSPath(a, b);
-                }
-
-                auto finish = chrono::steady_clock::now();
-
-                chrono::duration<double> elapsed_seconds{finish - start};
-
-                cout << "Searched for " << elapsed_seconds.count() << " seconds." << endl;
-
-                if (path.empty()) {
-                    cout << "No path between actors." << endl;
-                } else {
-                    for (auto it : path) {
-                        cout << it->getName() << endl;
-                    }
-                }
-            } else if (option == 2) {
-                auto start = chrono::steady_clock::now();
-
-                vector<Actor*> path;
-
-                if (begin && end) {
-                    path = g.DijkstrasPath(begin, end);
-                }
-
-                auto finish = chrono::steady_clock::now();
-
-                chrono::duration<double> elapsed_seconds{finish - start};
-
-                cout << "Searched for " << elapsed_seconds.count() << " seconds." << endl;
-
-                if (path.empty()) {
-                    cout << "No path between actors." << endl;
-                } else {
-                    for (auto it : path) {
-                        cout << it->getName() << endl;
-                    }
-                }
-            } else {
-                break;
-            }
-        }
-
-    }
-}
-
 //Main function: Make a separate function to read file and create objects?
-int main() {
+int main(int argc, char *argv[]) {
+    //initialize the Qt application
+    QApplication app(argc, argv);
+
     //Build graph from CSV
     auto start{chrono::steady_clock::now()}; //Timer for building graph - Starts here
 
@@ -169,7 +86,8 @@ int main() {
     cout << " seconds." << endl;
     cout << "There are " << g.getActorNum() << " actors and " << g.getFilmNum() << " films." << endl;
 
-    menu(g); //Displays a menu for searching - CLI testing, mostly
+    UI ui(g);
+    ui.run();
 
-    return 0;
+    return app.exec();
 }

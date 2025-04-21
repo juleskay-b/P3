@@ -80,8 +80,10 @@ void Graph::printActors() {
 void Graph::printAdjacent(const string& name) {
   if (actors.find(name) != actors.end()) {
     auto a = actors[name];
-    for (auto it = a->getAdjacent().begin(); it != a->getAdjacent().end(); it++) {
-      cout << it->first << ", " << it->second << " movie(s)." << endl;
+    for (auto& pair : a->getAdjacent()) {  //tweaked to display actor name
+      Actor* coStar = pair.first;
+      int numMovies = pair.second;
+      cout << "+ " << coStar->getName() << " (" << numMovies << " movie(s))" << endl;
     }
   }
 }

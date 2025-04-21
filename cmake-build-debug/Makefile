@@ -176,6 +176,30 @@ Graph.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Project3.dir\build.make CMakeFiles/Project3.dir/Graph.cpp.s
 .PHONY : Graph.cpp.s
 
+UI.obj: UI.cpp.obj
+.PHONY : UI.obj
+
+# target to build an object file
+UI.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Project3.dir\build.make CMakeFiles/Project3.dir/UI.cpp.obj
+.PHONY : UI.cpp.obj
+
+UI.i: UI.cpp.i
+.PHONY : UI.i
+
+# target to preprocess a source file
+UI.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Project3.dir\build.make CMakeFiles/Project3.dir/UI.cpp.i
+.PHONY : UI.cpp.i
+
+UI.s: UI.cpp.s
+.PHONY : UI.s
+
+# target to generate assembly for a file
+UI.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Project3.dir\build.make CMakeFiles/Project3.dir/UI.cpp.s
+.PHONY : UI.cpp.s
+
 main.obj: main.cpp.obj
 .PHONY : main.obj
 
@@ -215,6 +239,9 @@ help:
 	@echo ... Graph.obj
 	@echo ... Graph.i
 	@echo ... Graph.s
+	@echo ... UI.obj
+	@echo ... UI.i
+	@echo ... UI.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

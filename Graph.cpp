@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <queue>
+#include <set>
 
 Graph::Graph() {
   films = {};
@@ -146,6 +147,51 @@ vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
 
 }
 
-vector<Actor *> Graph::BFSPath(const string &firstActor, const string &secondActor) {
+vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActor) {
+  //Getting Actor names by input and then putting it into the two actor objects
+  Actor* actor_one = findByActorName(firstActor);
+  Actor* actor_two = findByActorName(secondActor);
+
+  //visited are the actor objects we found
+  //toVisit are the actor objects we still need to go through
+  set<Actor*> visited;
+  queue<Actor*> toVisit;
+  unordered_map<Actor*, Actor*> parent;
+
+  //Making sure the user puts in input for both names, if not function returns empty vector
+  if (!actor_one || !actor_two) {
+    return {};
+  }
+
+  //Inserting first actor in what's been visited
+  //Inserting first actor in what we currently need to visit
+  visited.insert(actor_one);
+  toVisit.push(actor_one);
+  parent[actor_one] = nullptr;
+
+  //Going to update the queue and visit other stars until the queue is empty
+  while(!toVisit.empty()) {
+    Actor* current = toVisit.front();
+    toVisit.pop();
+
+    if (current == actor_two) {
+      vector<Actor*> path;
+      for (Actor* at = actor_two; at != nullptr; at = parent[at]) {
+        path.push_back(at);
+      }
+      reverse(path.begin(), path.end());
+    }
+
+    //Going to visit other co-stars
+    for (auto& movieStar : current->getAdjacent()) {
+      Actor* star = movieStar.first;
+      if (visited.find(star) == visited.end()) {
+        visited.insert(star);
+        toVisit.push(star);
+        parent[star] = current;
+      }
+    }
+  }
+
   return {};
 }

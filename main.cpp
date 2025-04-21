@@ -122,7 +122,7 @@ int main() {
 
     getline(data, line);
 
-    while (getline(data, line) && count <= 100000) {
+    while (getline(data, line) && count <= 500000) {
         string stringID, actorName;
         stringstream ss(line);
 

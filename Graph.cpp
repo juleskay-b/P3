@@ -177,7 +177,7 @@ vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActo
     }
 
     //Going to visit other co-stars
-    for (auto movieStar : current->getAdjacent()) {
+    for (auto const movieStar : current->getAdjacent()) {
       Actor* star = movieStar.first;
       if (visited.find(star) == visited.end()) {
         visited.insert(star);
@@ -188,15 +188,19 @@ vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActo
   }
 
   //Vector to put actors that we get while trying to reach the second actor (the end)
+  //If second actor is not found in the whole visited set, then we return an empty set
   vector<Actor*> path;
-  if (visited.find(actor_two) == visited.end()) {
-    path.push_back(actor_two);
-  }
 
+ if (!visited.count(actor_two)) {
+   return {};
+ }
+
+  //We are pushing back the actor_two that the user inputs (the end)
   for (Actor* at = actor_two; at != nullptr; at = prev[at]) {
     path.push_back(at);
   }
 
+  //Backtracking from the end to the beginning
   reverse(path.begin(), path.end());
   return path;
 }

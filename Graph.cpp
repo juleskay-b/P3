@@ -25,6 +25,14 @@ void Graph::addActor(Actor* actor) {;
   }
 }
 
+void Graph::setWeightType(bool b) {
+  if (b) {
+    moreMovies = true;
+  } else {
+    moreMovies = false;
+  }
+}
+
 bool Graph::isActor(const string& name) {
   if (actors.find(name) != actors.end()) {
     return true;
@@ -121,7 +129,12 @@ vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
     for (pair<Actor*, int> a : curr->getAdjacent()) {
       Actor* neighbor = a.first;
       int numFilmsTogether = a.second;
-      double wt = 1.0/numFilmsTogether; //Prioritize actors with more films together
+      double wt;
+      if (moreMovies) {
+        wt = 1.0/numFilmsTogether; //Prioritize actors with more films together
+      } else {
+        wt = numFilmsTogether;
+      }
       double d2 = d + wt;
 
       if (d2 < distance[neighbor]) {

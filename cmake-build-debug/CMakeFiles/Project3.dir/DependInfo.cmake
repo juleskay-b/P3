@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Users/julia/P3/Film.cpp" "CMakeFiles/Project3.dir/Film.cpp.obj" "gcc" "CMakeFiles/Project3.dir/Film.cpp.obj.d"
   "C:/Users/julia/P3/Graph.cpp" "CMakeFiles/Project3.dir/Graph.cpp.obj" "gcc" "CMakeFiles/Project3.dir/Graph.cpp.obj.d"
+  "C:/Users/julia/P3/UI.cpp" "CMakeFiles/Project3.dir/UI.cpp.obj" "gcc" "CMakeFiles/Project3.dir/UI.cpp.obj.d"
   "C:/Users/julia/P3/main.cpp" "CMakeFiles/Project3.dir/main.cpp.obj" "gcc" "CMakeFiles/Project3.dir/main.cpp.obj.d"
   )
 

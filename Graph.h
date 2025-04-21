@@ -21,12 +21,14 @@ class Graph {
     map<int, Film*> films; //Map with an ID and an accompanying Film Object
     map<string, Actor*> actors; //Map with a name ("First Last") and accompanying Actor Object
     //Each actor has a list of edges (actors they have starred in a film with)
+    bool moreMovies; //determines whether actors with more or fewer movies together are prioritized
 public:
     Graph();
     void addFilm(Film* film);
     void addActor(Actor* actor);
     Film* findByID(int id);
     Actor* findByActorName(const string& name);
+    void setWeightType(bool b); //True for more movies, false for fewer movies
 
     bool isActor(const string& name); //Returns if an actor is already in the list
     bool isFilm(int id); //Returns if a film is already in the list

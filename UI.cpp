@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 #include <QGraphicsView>
+#include <QComboBox>
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
@@ -44,6 +45,12 @@ void UI::run() {
     algoLayout->addWidget(dijkstraRadio);
     algoGroup->setLayout(algoLayout);
     leftPanel->addWidget(algoGroup);
+
+    //dropdown for weighting preference
+    QComboBox* weightSelector = new QComboBox();
+    weightSelector->addItem("Favor more shared films");   // moreMovies = true
+    weightSelector->addItem("Favor fewer shared films");  // moreMovies = false
+    leftPanel->addWidget(weightSelector);
 
     //stats label (placeholder for now)
     QLabel* statsLabel = new QLabel("Time to complete:\nTotal connections:\n");
@@ -105,6 +112,10 @@ void UI::run() {
 
         string actor1 = actor1Input->text().toStdString();
         string actor2 = actor2Input->text().toStdString();
+
+        //for initial drop-down weight selection
+        graph.setWeightType(weightSelector->currentIndex() == 0);
+
 
         //validate input
         if (!graph.isActor(actor1) || !graph.isActor(actor2)) {
@@ -198,8 +209,6 @@ void UI::run() {
         scene->clear();
     });
 }
-
-
 
 
 //maybe useful later

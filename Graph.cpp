@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <queue>
+#include <set>
 
 Graph::Graph() {
   films = {};
@@ -22,6 +23,14 @@ void Graph::addFilm(Film* film) {
 void Graph::addActor(Actor* actor) {;
   if (actors.find(actor->getName()) == actors.end()) {
     actors[actor->getName()] = actor;
+  }
+}
+
+void Graph::setWeightType(bool b) {
+  if (b) {
+    moreMovies = true;
+  } else {
+    moreMovies = false;
   }
 }
 
@@ -121,7 +130,12 @@ vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
     for (pair<Actor*, int> a : curr->getAdjacent()) {
       Actor* neighbor = a.first;
       int numFilmsTogether = a.second;
-      double wt = 1.0/numFilmsTogether; //Prioritize actors with more films together
+      double wt;
+      if (moreMovies) {
+        wt = 1.0/numFilmsTogether; //Prioritize actors with more films together
+      } else {
+        wt = numFilmsTogether;
+      }
       double d2 = d + wt;
 
       if (d2 < distance[neighbor]) {
@@ -146,6 +160,44 @@ vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
 
 }
 
-vector<Actor *> Graph::BFSPath(const string &firstActor, const string &secondActor) {
+vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActor) {
+  Actor* actor_one = findByActorName(firstActor);
+  Actor* actor_two = findByActorName(secondActor);
+
+  set<Actor*> visited;
+  queue<Actor*> toVisit;
+  unordered_map<Actor*, Actor*> parent;
+
+  if (!actor_one || !actor_two) {
+    return {};
+  }
+
+  visited.insert(actor_one);
+  toVisit.push(actor_one);
+  parent[actor_one] = nullptr;
+
+  while (!toVisit.empty()) {
+    Actor* current = toVisit.front();
+    toVisit.pop();
+
+    //Reconstructing the path
+    if (current == actor_two) {
+      vector<Actor*> path;
+      for (Actor* at = actor_two; at != nullptr; at = parent[at]) {
+        path.push_back(at);
+      }
+      reverse(path.begin(), path.end());
+      return path;
+    }
+
+    for (auto& movieStar : current->getAdjacent()) {
+      Actor* star = movieStar.first;
+      if (visited.find(star) == visited.end()) {
+        visited.insert(star);
+        toVisit.push(star);
+        parent[star] = current;
+      }
+    }
+  }
   return {};
 }

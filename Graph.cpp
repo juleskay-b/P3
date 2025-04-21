@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <iostream>
 #include <queue>
-#include <set>
 
 Graph::Graph() {
   films = {};
@@ -81,8 +80,10 @@ void Graph::printActors() {
 void Graph::printAdjacent(const string& name) {
   if (actors.find(name) != actors.end()) {
     auto a = actors[name];
-    for (auto it = a->getAdjacent().begin(); it != a->getAdjacent().end(); it++) {
-      cout << it->first << ", " << it->second << " movie(s)." << endl;
+    for (auto& pair : a->getAdjacent()) {  //tweaked to display actor name
+      Actor* coStar = pair.first;
+      int numMovies = pair.second;
+      cout << "+ " << coStar->getName() << " (" << numMovies << " movie(s))" << endl;
     }
   }
 }
@@ -145,62 +146,6 @@ vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
 
 }
 
-vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActor) {
-  //Getting Actor names by input and then putting it into the two actor objects
-  Actor* actor_one = findByActorName(firstActor);
-  Actor* actor_two = findByActorName(secondActor);
-
-  //visited are the actor objects we found
-  //toVisit are the actor objects we still need to go through
-  set<Actor*> visited;
-  queue<Actor*> toVisit;
-  unordered_map<Actor*, Actor*> prev;
-
-  //Making sure the user puts in input for both names, if not function returns empty vector
-  if (!actor_one || !actor_two) {
-    return {};
-  }
-
-  //Inserting first actor in what's been visited
-  //Inserting first actor in what we currently need to visit
-  visited.insert(actor_one);
-  toVisit.push(actor_one);
-
-  //Going to update the queue and visit other stars until the queue is empty
-  while(!toVisit.empty()) {
-    Actor* current = toVisit.front();
-    toVisit.pop();
-
-    //This is if we find the second actor, we break out of the loop and start to get the path
-    if (actor_two == current) {
-      break;
-    }
-
-    //Going to visit other co-stars
-    for (auto const movieStar : current->getAdjacent()) {
-      Actor* star = movieStar.first;
-      if (visited.find(star) == visited.end()) {
-        visited.insert(star);
-        prev[star] = current;
-        toVisit.push(star);
-      }
-    }
-  }
-
-  //Vector to put actors that we get while trying to reach the second actor (the end)
-  //If second actor is not found in the whole visited set, then we return an empty set
-  vector<Actor*> path;
-
- if (!visited.count(actor_two)) {
-   return {};
- }
-
-  //We are pushing back the actor_two that the user inputs (the end)
-  for (Actor* at = actor_two; at != nullptr; at = prev[at]) {
-    path.push_back(at);
-  }
-
-  //Backtracking from the end to the beginning
-  reverse(path.begin(), path.end());
-  return path;
+vector<Actor *> Graph::BFSPath(const string &firstActor, const string &secondActor) {
+  return {};
 }

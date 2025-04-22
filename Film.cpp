@@ -2,42 +2,58 @@
 // Created by julia on 4/10/2025.
 //
 
-#ifndef FILM_H
-#define FILM_H
+#include "Film.h"
 
-#include <string>
-#include <unordered_set>
-#include <unordered_map>
-class Actor;
-using namespace std;
+Film::Film(int ID) {
+    this->id = ID;
+    castSize = 0;
+    cast = {};
+    //Add information like year, other stuff if possible
+    year = 0;
+    name = "";
+}
 
-struct Film {
-    int id; //An ID assigned by the dataset, 10000001, 10000002, etc.
-    string name; //The name of the film
-    int year; //The year of the film's release
-    int castSize; //The number of credited actors for the film for sorting purposes
-    unordered_set<Actor*> cast; //A vector of the actors credited in the film
+void Film::addActor(Actor* actor) {
+    cast.insert(actor); //Adds the actor to the cast of this film. Does nothing if actor is already in cast
+    actor->addFilmCredit(this); //Adds a film credit to the actor object
+    for (Actor* a : cast) { //Iterates through actors in the cast
+        if (a != actor) {
+            a->addEdge(actor);
+            actor->addEdge(a);
+        }
+    }
+    castSize++;
+}
 
-    Film(int ID); //Constructor
-    void addActor(Actor*); //Adds an actor to the cast list
-};
+Actor::Actor(const string& name) {
+    this->name = name;
+    numFilms = 0;
+    adjacent = {};
+    films = {};
+}
 
-class Actor {
-    string name;
-    int numFilms; //The number of films the actor has appeared in for sorting purposes
-    unordered_map<Actor*, int> adjacent; //List of actors that have starred in a movie with this actor plus a weight
-    unordered_set<Film*> films; //List of films this actor has starred in
-public:
-    Actor(const string& name); //Constructor
-    void addFilmCredit(Film *film); //Adds a credit to the actor's list, and increases num films by 1
-    void addEdge(Actor* actor);
+void Actor::addFilmCredit(Film *film) {
+    if (films.insert(film).second) {
+        numFilms++;
+    }
+}
 
-    //Getters
-    string getName();
-    unordered_map<Actor*, int>& getAdjacent();
-    unordered_set<Film*>& getFilms();
-};
+void Actor::addEdge(Actor *actor) {
+    if (adjacent.find(actor) != adjacent.end()) {
+        adjacent[actor]++;
+    } else {
+        adjacent[actor] = 1;
+    }
+}
 
+string Actor::getName() {
+    return name;
+}
 
+unordered_map<Actor*, int>& Actor::getAdjacent() {
+    return adjacent;
+}
 
-#endif //FILM_H
+unordered_set<Film *> &Actor::getFilms() {
+    return films;
+}

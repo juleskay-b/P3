@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 #include <QGraphicsView>
+#include <QComboBox>
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
@@ -44,6 +45,12 @@ void UI::run() {
     algoLayout->addWidget(dijkstraRadio);
     algoGroup->setLayout(algoLayout);
     leftPanel->addWidget(algoGroup);
+
+    //dropdown for weighting preference
+    QComboBox* weightSelector = new QComboBox();
+    weightSelector->addItem("Favor more shared films");   // moreMovies = true
+    weightSelector->addItem("Favor fewer shared films");  // moreMovies = false
+    leftPanel->addWidget(weightSelector);
 
     //stats label (placeholder for now)
     QLabel* statsLabel = new QLabel("Time to complete:\nTotal connections:\n");
@@ -105,6 +112,10 @@ void UI::run() {
 
         string actor1 = actor1Input->text().toStdString();
         string actor2 = actor2Input->text().toStdString();
+
+        //for initial drop-down weight selection
+        graph.setWeightType(weightSelector->currentIndex() == 0);
+
 
         //validate input
         if (!graph.isActor(actor1) || !graph.isActor(actor2)) {
@@ -179,12 +190,33 @@ void UI::run() {
              label->setPos(x, y - 20);
              label->setDefaultTextColor(Qt::black);
 
-             //draw line from previous node
              if (i > 0) {
-                 scene->addLine(lastCenter.x() + nodeSize / 2, lastCenter.y() + nodeSize / 2,
-                                x + nodeSize / 2, y + nodeSize / 2,
-                                QPen(Qt::black));
-             }
+                int x1 = lastCenter.x() + nodeSize / 2;
+                int y1 = lastCenter.y() + nodeSize / 2;
+                int x2 = x + nodeSize / 2;
+                int y2 = y + nodeSize / 2;
+
+                //draw the line
+                scene->addLine(x1, y1, x2, y2, QPen(Qt::black));
+
+                //find shared film count
+                Actor* a1 = path[i - 1];
+                Actor* a2 = path[i];
+
+                int sharedCount = 0;
+                auto adjMap = a1->getAdjacent();
+                if (adjMap.find(a2) != adjMap.end()) {
+                    sharedCount = adjMap[a2];
+                }
+
+                //add label halfway on the line
+                int midX = (x1 + x2) / 2;
+                int midY = (y1 + y2) / 2;
+
+                QGraphicsTextItem* edgeLabel = scene->addText(QString::number(sharedCount) + " films");
+                edgeLabel->setPos(midX, midY - 10);
+                edgeLabel->setDefaultTextColor(Qt::darkGray);
+            }
 
              lastCenter = QPoint(x, y);
          }
@@ -198,8 +230,6 @@ void UI::run() {
         scene->clear();
     });
 }
-
-
 
 
 //maybe useful later

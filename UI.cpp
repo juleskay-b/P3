@@ -87,7 +87,7 @@ void UI::run() {
     resultLabel->setMinimumHeight(200);
     resultLabel->setStyleSheet("color: #336; background-color: #eee; padding: 10px; border: 1px solid #ccc;");
     rightPanel->addWidget(resultLabel);
-    rightPanel->addStretch();
+
 
     // === VISUAL PATH VIEW === //
     QGraphicsScene* scene = new QGraphicsScene();
@@ -95,7 +95,7 @@ void UI::run() {
     view->setMinimumHeight(200);
     view->setStyleSheet("background-color: white; border: 1px solid #ccc;");
     rightPanel->addWidget(view);
-    rightPanel->addStretch();
+
 
     // ==== FINALIZE LAYOUT ==== //
     mainLayout->addLayout(leftPanel, 1);

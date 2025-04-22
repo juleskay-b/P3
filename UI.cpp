@@ -87,7 +87,7 @@ void UI::run() {
     resultLabel->setWordWrap(true);
     resultLabel->setAlignment(Qt::AlignTop);
     resultLabel->setMinimumHeight(200);
-    resultLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
+    resultLabel->setStyleSheet("color: #000; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
     rightPanel->addWidget(resultLabel);
 
 
@@ -136,8 +136,8 @@ void UI::run() {
 
         if (bfsRadio->isChecked()) {
             path = graph.BFSPath(actor1, actor2);
-            nodeColor = QColor("#4C9BE8");
-            edgeColor = QColor("#2E86C1");
+            nodeColor = QColor("#F75AC4");
+            edgeColor = QColor("#F75283");
             algoUsed = "BFS";
         }
         else if (dijkstraRadio->isChecked()) {
@@ -148,8 +148,8 @@ void UI::run() {
                 return;
             }
             path = graph.DijkstrasPath(a1, a2);
-            nodeColor = QColor("#A3B18A");
-            edgeColor = QColor("#5B7553");
+            nodeColor = QColor("#F7E901");
+            edgeColor = QColor("#000000");
             algoUsed = "Dijkstra";
         }
 

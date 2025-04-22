@@ -105,6 +105,30 @@ void Graph::printFilms(const string& name) {
   }
 }
 
+void Graph::printSharedFilms(const string& a1, const string& a2) {
+  Actor* actor_one = findByActorName(a1);
+  Actor* actor_two = findByActorName(a2);
+
+  set<string> sharedMovies;
+  for (Film*  film_one : actor_one->getFilms()) {
+    for (Film* film_two : actor_two->getFilms()) {
+      if (film_one == film_two) {
+        sharedMovies.insert(film_one->name);
+        continue;
+      }
+    }
+  }
+  cout << actor_one->getName() << " and " << actor_two->getName() << endl;
+  if (sharedMovies.empty()) {
+    cout << "No Movies Shared" << endl;
+  }
+  else {
+    for (const string& movie : sharedMovies) {
+      cout << movie << endl;
+    }
+  }
+}
+
 vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
   unordered_map<Actor*, double> distance;
   unordered_map<Actor*, Actor*> prev;
@@ -161,41 +185,35 @@ vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
 }
 
 vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActor) {
-  //Getting Actor names by input and then putting it into the two actor objects
   Actor* actor_one = findByActorName(firstActor);
   Actor* actor_two = findByActorName(secondActor);
 
-  //visited are the actor objects we found
-  //toVisit are the actor objects we still need to go through
   set<Actor*> visited;
   queue<Actor*> toVisit;
   unordered_map<Actor*, Actor*> parent;
 
-  //Making sure the user puts in input for both names, if not function returns empty vector
   if (!actor_one || !actor_two) {
     return {};
   }
 
-  //Inserting first actor in what's been visited
-  //Inserting first actor in what we currently need to visit
   visited.insert(actor_one);
   toVisit.push(actor_one);
   parent[actor_one] = nullptr;
 
-  //Going to update the queue and visit other stars until the queue is empty
-  while(!toVisit.empty()) {
+  while (!toVisit.empty()) {
     Actor* current = toVisit.front();
     toVisit.pop();
 
+    //Reconstructing the path
     if (current == actor_two) {
       vector<Actor*> path;
       for (Actor* at = actor_two; at != nullptr; at = parent[at]) {
         path.push_back(at);
       }
       reverse(path.begin(), path.end());
+      return path;
     }
 
-    //Going to visit other co-stars
     for (auto& movieStar : current->getAdjacent()) {
       Actor* star = movieStar.first;
       if (visited.find(star) == visited.end()) {
@@ -205,6 +223,5 @@ vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActo
       }
     }
   }
-
   return {};
 }

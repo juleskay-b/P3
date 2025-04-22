@@ -175,8 +175,10 @@ CMakeFiles/Project3.dir/Graph.cpp.obj: C:/Users/julia/P3/Graph.cpp \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_iterator_base_types.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_map.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_multimap.h \
+  C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_multiset.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_pair.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_queue.h \
+  C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_set.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_tempbuf.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_tree.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_uninitialized.h \
@@ -224,6 +226,7 @@ CMakeFiles/Project3.dir/Graph.cpp.obj: C:/Users/julia/P3/Graph.cpp \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/glue_algorithm_defs.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/pstl_config.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/queue \
+  C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/set \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdexcept \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdlib.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/streambuf \
@@ -551,6 +554,7 @@ CMakeFiles/Project3.dir/UI.cpp.obj: C:/Users/julia/P3/UI.cpp \
   C:/Qt/6.9.0/mingw_64/include/QtCore/q20utility.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/q23utility.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qabstracteventdispatcher.h \
+  C:/Qt/6.9.0/mingw_64/include/QtCore/qabstractitemmodel.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qalgorithms.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qanystringview.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qarraydata.h \
@@ -627,6 +631,7 @@ CMakeFiles/Project3.dir/UI.cpp.obj: C:/Users/julia/P3/UI.cpp \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qprocessordetection.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qrect.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qrefcount.h \
+  C:/Qt/6.9.0/mingw_64/include/QtCore/qregularexpression.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qscopedpointer.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qscopeguard.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qset.h \
@@ -715,9 +720,11 @@ CMakeFiles/Project3.dir/UI.cpp.obj: C:/Users/julia/P3/UI.cpp \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qtguiexports.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qtguiglobal.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qtransform.h \
+  C:/Qt/6.9.0/mingw_64/include/QtGui/qvalidator.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qwindowdefs.h \
   C:/Qt/6.9.0/mingw_64/include/QtGui/qwindowdefs_win.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QApplication \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/QComboBox \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsEllipseItem \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsLineItem \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsScene \
@@ -731,9 +738,13 @@ CMakeFiles/Project3.dir/UI.cpp.obj: C:/Users/julia/P3/UI.cpp \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QVBoxLayout \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QWidget \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qabstractbutton.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qabstractscrollarea.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qabstractslider.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qabstractspinbox.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qapplication.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qboxlayout.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qcombobox.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qframe.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qgraphicsitem.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qgraphicsscene.h \
@@ -746,8 +757,14 @@ CMakeFiles/Project3.dir/UI.cpp.obj: C:/Users/julia/P3/UI.cpp \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qlineedit.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qpushbutton.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qradiobutton.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qrubberband.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qscrollarea.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qsizepolicy.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qslider.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qstyle.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qstyleoption.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qtabbar.h \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/qtabwidget.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qtwidgets-config.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qtwidgetsexports.h \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -1299,6 +1316,8 @@ C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/invoke.h:
 
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qabstractitemdelegate.h:
+
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/node_handle.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtWidgets/QWidget:
@@ -1583,6 +1602,8 @@ C:/Qt/6.9.0/mingw_64/include/QtGui/qpixmap.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/basic_ios.tcc:
 
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qabstractspinbox.h:
+
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/vector:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/deque.tcc:
@@ -1625,6 +1646,8 @@ C:/Users/julia/P3/UI.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtCore/qoverload.h:
 
+C:/Qt/6.9.0/mingw_64/include/QtCore/qabstractitemmodel.h:
+
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_bvector.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_deque.h:
@@ -1639,7 +1662,13 @@ C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_multimap.h:
 
+C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_multiset.h:
+
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_queue.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstdint:
+
+C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_set.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtCore/qmetacontainer.h:
 
@@ -1706,6 +1735,10 @@ C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cassert:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/queue:
+
+C:/Qt/6.9.0/mingw_64/include/QtCore/qexceptionhandling.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/set:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/stdexcept:
 
@@ -1829,17 +1862,11 @@ C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/shared_ptr_base.h:
 
-C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_multiset.h:
-
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_raw_storage_iter.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtCore/qxptype_traits.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_relops.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cstdint:
-
-C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl_set.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtCore/qmap.h:
 
@@ -1876,10 +1903,6 @@ C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/glue_memory_defs.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/pstl/glue_numeric_defs.h:
-
-C:/Qt/6.9.0/mingw_64/include/QtCore/qexceptionhandling.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/set:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/utility:
 
@@ -1922,6 +1945,8 @@ C:/Qt/6.9.0/mingw_64/include/QtCore/qcoreapplication_platform.h:
 C:/Qt/6.9.0/mingw_64/include/QtCore/qabstracteventdispatcher.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtWidgets/qsizepolicy.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qabstractslider.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtCore/qarraydataops.h:
 
@@ -1999,7 +2024,11 @@ C:/Qt/6.9.0/mingw_64/include/QtCore/qobjectdefs_impl.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtCore/qpair.h:
 
+C:/Qt/6.9.0/mingw_64/include/QtCore/qregularexpression.h:
+
 C:/Qt/6.9.0/mingw_64/include/QtCore/qpoint.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qtabwidget.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtCore/qprocessordetection.h:
 
@@ -2091,7 +2120,11 @@ C:/Qt/6.9.0/mingw_64/include/QtGui/qtextdocument.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtGui/qtguiglobal.h:
 
+C:/Qt/6.9.0/mingw_64/include/QtGui/qvalidator.h:
+
 C:/Qt/6.9.0/mingw_64/include/QtGui/qwindowdefs.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/QComboBox:
 
 C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsLineItem:
 
@@ -2104,6 +2137,8 @@ C:/Qt/6.9.0/mingw_64/include/QtWidgets/QLabel:
 C:/Qt/6.9.0/mingw_64/include/QtWidgets/QPushButton:
 
 C:/Qt/6.9.0/mingw_64/include/QtWidgets/qboxlayout.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qcombobox.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtWidgets/qframe.h:
 
@@ -2118,6 +2153,16 @@ C:/Qt/6.9.0/mingw_64/include/QtWidgets/qlabel.h:
 C:/Qt/6.9.0/mingw_64/include/QtWidgets/qlineedit.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtWidgets/qpushbutton.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qrubberband.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qslider.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qstyle.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qstyleoption.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/qtabbar.h:
 
 C:/Qt/6.9.0/mingw_64/include/QtWidgets/qtwidgets-config.h:
 

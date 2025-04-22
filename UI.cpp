@@ -155,10 +155,29 @@ void UI::run() {
         }
         else {
             QString result = algoUsed + " Path:\n";
+            QString moviesList;
             for (int i = 0; i < path.size(); ++i) {
-                result += QString::fromStdString(path[i]->getName());
-                if (i < path.size() - 1) result += " → ";
+                    result += QString::fromStdString(path[i]->getName());
+
+                    if (i < path.size() - 1) {
+                        moviesList += "\nFilms Shared by " + QString::fromStdString(path[i]->getName()) + " and " + QString::fromStdString(path[i + 1]->getName()) + ": ";
+
+                    for (Film* f : path[i]->getFilms()) {
+                        for (Film* f2 : path[i + 1]->getFilms()) {
+                            if (f == f2) {
+                                moviesList += QString::fromStdString(f2->name) + " (" + QString::fromStdString(f2->year) + "), ";
+                            }
+                        }
+                    }
+                    }
+
+                    if (i < path.size() - 1) result += " → ";
             }
+
+            result += moviesList;
+
+            result += "\n";
+
             resultLabel->setText(result);
 
             //update the stats

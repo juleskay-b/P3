@@ -11,6 +11,8 @@
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
 #include <QGraphicsTextItem>
+#include <QGraphicsPixmapItem>
+#include <QTimer>
 #include <cstdlib>
 #include <ctime>
 
@@ -22,6 +24,8 @@ UI::UI(Graph& g) : graph(g) {}
 void UI::run() {
     window.setWindowTitle("Star Fishing");
     window.resize(800, 500);
+    window.setStyleSheet("background-color: #D2CD95;");
+
 
     // ==== MAIN LAYOUT ==== (horizontal)
     QHBoxLayout* mainLayout = new QHBoxLayout();
@@ -57,7 +61,28 @@ void UI::run() {
     statsLabel->setWordWrap(true);
     statsLabel->setStyleSheet("margin-top: 15px;");
     leftPanel->addWidget(statsLabel);
-    leftPanel->addStretch(); //pushing content to top
+
+    //rotating star setup
+    QGraphicsScene* starScene = new QGraphicsScene();
+    QGraphicsView* starView = new QGraphicsView(starScene);
+    starView->setStyleSheet("background: transparent; border: none;");
+    starView->setFixedSize(200, 200); // size of the whole star area alloted
+
+    QPixmap starPixmap("Images/Starfy.webp");
+    QGraphicsPixmapItem* starItem = starScene->addPixmap(
+        starPixmap.scaled(140, 140, Qt::KeepAspectRatio, Qt::SmoothTransformation) //actual size of star
+    );
+
+    //star positioning
+    starItem->setTransformOriginPoint(starItem->boundingRect().center());
+    starItem->setPos(
+        (starView->width() - starItem->boundingRect().width()) / 2,
+        (starView->height() - starItem->boundingRect().height()) / 2
+    );
+
+    //put it at the bottom
+    leftPanel->addStretch(); //pushes everything to top
+    leftPanel->addWidget(starView);
 
     // ==== RIGHT PANEL ==== (vertical)
     QVBoxLayout* rightPanel = new QVBoxLayout();
@@ -85,7 +110,7 @@ void UI::run() {
     resultLabel->setWordWrap(true);
     resultLabel->setAlignment(Qt::AlignTop);
     resultLabel->setMinimumHeight(200);
-    resultLabel->setStyleSheet("color: #336; background-color: #eee; padding: 10px; border: 1px solid #ccc;");
+    resultLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
     rightPanel->addWidget(resultLabel);
 
 
@@ -93,7 +118,7 @@ void UI::run() {
     QGraphicsScene* scene = new QGraphicsScene();
     QGraphicsView* view = new QGraphicsView(scene);
     view->setMinimumHeight(200);
-    view->setStyleSheet("background-color: white; border: 1px solid #ccc;");
+    view->setStyleSheet("background-color: #F5DEB3; color: #000; border: 1px solid #aaa;");
     rightPanel->addWidget(view);
 
 
@@ -102,6 +127,14 @@ void UI::run() {
     mainLayout->addLayout(rightPanel, 3);
     window.setLayout(mainLayout);
     window.show();
+
+    // === ROTATION FOR THE STAR (using QTimer) === //
+    QTimer* spinTimer = new QTimer();
+    QObject::connect(spinTimer, &QTimer::timeout, [starItem]() {
+        qreal angle = starItem->rotation();
+        starItem->setRotation(angle + 2);  //rotate by 2 degrees
+    });
+    spinTimer->start(50);  // 50ms interval
 
     // ==== RANDOMNESS SETUP ==== //
     srand(time(nullptr)); //generates random nums for positioning of actor nodes (kinda like a constellation....)
@@ -162,10 +195,26 @@ void UI::run() {
         }
         else {
             QString result = algoUsed + " Path:\n";
+            QString moviesList;
             for (int i = 0; i < path.size(); ++i) {
-                result += QString::fromStdString(path[i]->getName());
-                if (i < path.size() - 1) result += " → ";
+                    result += QString::fromStdString(path[i]->getName());
+
+                        if (i < path.size() - 1) {
+                            moviesList += "\nFilms Shared by " + QString::fromStdString(path[i]->getName()) + " and " + QString::fromStdString(path[i + 1]->getName()) + ": ";
+
+                        for (Film* f : path[i]->getFilms()) {
+                            for (Film* f2 : path[i + 1]->getFilms()) {
+                                if (f == f2) {
+                                    moviesList += QString::fromStdString(f2->name) + " (" + QString::fromStdString(f2->year) + "), ";
+                                }
+                            }
+                        }
+                    }
+
+                    if (i < path.size() - 1) result += " → ";
             }
+
+            result += "\n\n" + moviesList;
             resultLabel->setText(result);
 
             //update the stats
@@ -236,22 +285,17 @@ void UI::run() {
         resultLabel->setText("Result will appear here...");
         scene->clear();
     });
+    actor1Input->setStyleSheet("background-color: #F5DEB3; color: #000; border: 1px solid #aaa;");
+    actor2Input->setStyleSheet("background-color: #F5DEB3; color: #000; border: 1px solid #aaa;");
+    searchButton->setStyleSheet("background-color: #DEB887; color: #000; padding: 5px;");
+    clearButton->setStyleSheet("background-color: #DEB887; color: #000; padding: 5px;");
+    bfsRadio->setStyleSheet("color: #000;");
+    dijkstraRadio->setStyleSheet("color: #000;");
+    weightSelector->setStyleSheet("background-color: #F5DEB3; color: #000;");
 }
 
 
 //maybe useful later
-void UI::showActorFilms() {
-    string name;
-    cout << "Enter the actor's name: ";
-    getline(cin, name);
-
-    if (!graph.isActor(name)) {
-        cout << "Actor not found." << endl;
-    } else {
-        cout << "Films for " << name << ":" << endl;
-        graph.printFilms(name);
-    }
-}
 
 void UI::showCoStars() {
     string name;

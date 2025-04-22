@@ -23,7 +23,6 @@ class UI {
 public:
     UI(Graph& graph);
     void run();
-    void showActorFilms();
     void showCoStars();
 };
 

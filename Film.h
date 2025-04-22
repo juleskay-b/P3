@@ -14,12 +14,16 @@ using namespace std;
 struct Film {
     int id; //An ID assigned by the dataset, 10000001, 10000002, etc.
     string name; //The name of the film
-    int year; //The year of the film's release
+    string year; //The year of the film's release
     int castSize; //The number of credited actors for the film for sorting purposes
     unordered_set<Actor*> cast; //A vector of the actors credited in the film
 
     Film(int ID); //Constructor
     void addActor(Actor*); //Adds an actor to the cast list
+
+    //Setters
+    void setName(const string& name);
+    void setYear(const string& year);
 };
 
 class Actor {

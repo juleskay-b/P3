@@ -129,6 +129,8 @@ int main(int argc, char *argv[]) {
     cout << " seconds." << endl;
     cout << "There are " << g.getActorNum() << " actors and " << g.getFilmNum() << " films." << endl;
 
+    readFilmData(g);
+
     UI ui(g);
     ui.run();
 

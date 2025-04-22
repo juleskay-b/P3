@@ -9,8 +9,8 @@ Film::Film(int ID) {
     castSize = 0;
     cast = {};
     //Add information like year, other stuff if possible
-    year = "unknown";
-    name = "unknown";
+    year = 0;
+    name = "";
 }
 
 void Film::addActor(Actor* actor) {
@@ -44,14 +44,6 @@ void Actor::addEdge(Actor *actor) {
     } else {
         adjacent[actor] = 1;
     }
-}
-
-void Film::setName(const string& name) {
-    this->name = name;
-}
-
-void Film::setYear(const string &year) {
-    this->year = year;
 }
 
 string Actor::getName() {

@@ -20,10 +20,9 @@
 class UI {
     Graph& graph;
     QWidget window;
-    public:
+public:
     UI(Graph& graph);
     void run();
-    void showActorFilms();
     void showCoStars();
 };
 

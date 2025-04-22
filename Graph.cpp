@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <queue>
+#include <set>
 
 Graph::Graph() {
   films = {};
@@ -159,6 +160,44 @@ vector<Actor *> Graph::DijkstrasPath(Actor *start, Actor *end) {
 
 }
 
-vector<Actor *> Graph::BFSPath(const string &firstActor, const string &secondActor) {
+vector<Actor*> Graph::BFSPath(const string& firstActor, const string& secondActor) {
+  Actor* actor_one = findByActorName(firstActor);
+  Actor* actor_two = findByActorName(secondActor);
+
+  set<Actor*> visited;
+  queue<Actor*> toVisit;
+  unordered_map<Actor*, Actor*> parent;
+
+  if (!actor_one || !actor_two) {
+    return {};
+  }
+
+  visited.insert(actor_one);
+  toVisit.push(actor_one);
+  parent[actor_one] = nullptr;
+
+  while (!toVisit.empty()) {
+    Actor* current = toVisit.front();
+    toVisit.pop();
+
+    //Reconstructing the path
+    if (current == actor_two) {
+      vector<Actor*> path;
+      for (Actor* at = actor_two; at != nullptr; at = parent[at]) {
+        path.push_back(at);
+      }
+      reverse(path.begin(), path.end());
+      return path;
+    }
+
+    for (auto& movieStar : current->getAdjacent()) {
+      Actor* star = movieStar.first;
+      if (visited.find(star) == visited.end()) {
+        visited.insert(star);
+        toVisit.push(star);
+        parent[star] = current;
+      }
+    }
+  }
   return {};
 }

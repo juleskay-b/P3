@@ -16,16 +16,18 @@
 #include <cstdlib>
 #include <ctime>
 
-
 using namespace std;
 
 UI::UI(Graph& g) : graph(g) {}
+
+QString fullResultText;
+int currentCharIndex = 0;
+QTimer* textRevealTimer;
 
 void UI::run() {
     window.setWindowTitle("Star Fishing");
     window.resize(800, 500);
     window.setStyleSheet("background-color: #D2CD95;");
-
 
     // ==== MAIN LAYOUT ==== (horizontal)
     QHBoxLayout* mainLayout = new QHBoxLayout();
@@ -34,20 +36,21 @@ void UI::run() {
     QVBoxLayout* leftPanel = new QVBoxLayout();
 
     //title
-    QLabel* title = new QLabel("Find Shortest Path");
+    QLabel* title = new QLabel("Star Fishing");
     title->setAlignment(Qt::AlignCenter);
-    title->setStyleSheet("font-size: 18px; font-weight: bold;");
+    title->setStyleSheet("color: #336; background-color: #F5DEB3; font-size: 18px; font-weight: bold; padding: 10px; border: 1px solid #aaa;");
     leftPanel->addWidget(title);
 
     //radio (small,circular) buttons for algorithm selection
     QGroupBox* algoGroup = new QGroupBox("Choose Algorithm");
     QVBoxLayout* algoLayout = new QVBoxLayout();
     QRadioButton* bfsRadio = new QRadioButton("BFS");
-    QRadioButton* dijkstraRadio = new QRadioButton("Dijkstra");
+    QRadioButton* dijkstraRadio = new QRadioButton("Dijkstra's");
     bfsRadio->setChecked(true);
     algoLayout->addWidget(bfsRadio);
     algoLayout->addWidget(dijkstraRadio);
     algoGroup->setLayout(algoLayout);
+    algoGroup->setStyleSheet("color: #336; background-color: #F5DEB3; font-weight: bold; padding: 10px; border: 1px solid #aaa;");
     leftPanel->addWidget(algoGroup);
 
     //dropdown for weighting preference
@@ -59,22 +62,18 @@ void UI::run() {
     //stats label (placeholder for now)
     QLabel* statsLabel = new QLabel("Time to complete:\nTotal connections:\n");
     statsLabel->setWordWrap(true);
-    statsLabel->setStyleSheet("margin-top: 15px;");
+    statsLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
     leftPanel->addWidget(statsLabel);
 
     //rotating star setup
     QGraphicsScene* starScene = new QGraphicsScene();
     QGraphicsView* starView = new QGraphicsView(starScene);
     starView->setStyleSheet("background: transparent; border: none;");
-    starView->setFixedSize(220, 220); // size of the whole star area alloted
-
-    //disable scroll bars thank goodness
-    starView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    starView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    starView->setFixedSize(200, 200); // size of the whole star area alloted
 
     QPixmap starPixmap("Images/Starfy.webp");
     QGraphicsPixmapItem* starItem = starScene->addPixmap(
-        starPixmap.scaled(160, 160, Qt::KeepAspectRatio, Qt::SmoothTransformation) //actual size of star
+        starPixmap.scaled(140, 140, Qt::KeepAspectRatio, Qt::SmoothTransformation) //actual size of star
     );
 
     //star positioning
@@ -87,6 +86,9 @@ void UI::run() {
     //put it at the bottom
     leftPanel->addStretch(); //pushes everything to top
     leftPanel->addWidget(starView);
+
+    //initialize for result box text appearance
+    textRevealTimer = new QTimer();
 
     // ==== RIGHT PANEL ==== (vertical)
     QVBoxLayout* rightPanel = new QVBoxLayout();
@@ -109,21 +111,36 @@ void UI::run() {
     QPushButton* clearButton = new QPushButton("Clear");
     rightPanel->addWidget(clearButton);
 
-    //result label text (might remove later we'll see)
-    QLabel* resultLabel = new QLabel("Result will appear here...");
+    //result label text dialogues when refreshing
+    QStringList placeholderLines = {
+        "Casting the line... ",
+        "Searching for Oscar-worthy collabs ...",
+        "Awaiting your blockbuster path... ",
+        "Searching for cinematic connections...",
+        "Ugh fine, I’ll find your path...",
+        "Starfy is swimming through IMDb waters... ",
+        "May the best costar win...",
+        "Consulting the stars... literally",
+        "Working overtime...",
+        "Drowning in edges, send floaties",
+        "Keep going, Starfy needs money...",
+        "They don't pay Starfy enough for this...",
+        "Every click feeds a hungry Starfy",
+    };
+    QLabel* resultLabel = new QLabel("Awaiting your blockbuster path... ");
+    resultLabel->setTextFormat(Qt::RichText);
     resultLabel->setWordWrap(true);
     resultLabel->setAlignment(Qt::AlignTop);
     resultLabel->setMinimumHeight(200);
-    resultLabel->setStyleSheet("color: #336; background-color: #eee; padding: 10px; border: 1px solid #ccc;");
+    resultLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
 
+    //scroll for result text
     QScrollArea* scrollArea = new QScrollArea;
     scrollArea->setWidgetResizable(true);
     scrollArea->setAlignment(Qt::AlignTop);
     scrollArea->setMinimumHeight(200);
-    resultLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
     scrollArea->setWidget(resultLabel);
     rightPanel->addWidget(scrollArea);
-    rightPanel->addStretch();
 
     // === VISUAL PATH VIEW === //
     QGraphicsScene* scene = new QGraphicsScene();
@@ -131,7 +148,6 @@ void UI::run() {
     view->setMinimumHeight(200);
     view->setStyleSheet("background-color: #F5DEB3; color: #000; border: 1px solid #aaa;");
     rightPanel->addWidget(view);
-
 
     // ==== FINALIZE LAYOUT ==== //
     mainLayout->addLayout(leftPanel, 1);
@@ -153,13 +169,11 @@ void UI::run() {
     // ==== BUTTON(S) LOGIC ==== //
     //search button
     QObject::connect(searchButton, &QPushButton::clicked,[=]() {
-
         string actor1 = actor1Input->text().toStdString();
         string actor2 = actor2Input->text().toStdString();
 
         //for initial drop-down weight selection
         graph.setWeightType(weightSelector->currentIndex() == 0);
-
 
         //validate input
         if (!graph.isActor(actor1) || !graph.isActor(actor2)) {
@@ -178,8 +192,8 @@ void UI::run() {
 
         if (bfsRadio->isChecked()) {
             path = graph.BFSPath(actor1, actor2);
-            nodeColor = QColor("#4C9BE8");
-            edgeColor = QColor("#2E86C1");
+            nodeColor = QColor("#C8A2C8");   //lilac purple
+            edgeColor = QColor("#A66FB5");   //deeper purple
             algoUsed = "BFS";
         }
         else if (dijkstraRadio->isChecked()) {
@@ -192,13 +206,12 @@ void UI::run() {
             path = graph.DijkstrasPath(a1, a2);
             nodeColor = QColor("#A3B18A");
             edgeColor = QColor("#5B7553");
-            algoUsed = "Dijkstra";
+            algoUsed = "Dijkstra's";
         }
 
         //stop pathfinding
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;
-
 
         //display path text in result label
         if (path.empty()) {
@@ -208,10 +221,8 @@ void UI::run() {
             QString result = algoUsed + " Path:\n";
             QString moviesList;
             for (int i = 0; i < path.size(); ++i) {
-                    //Add actor to path
                     result += QString::fromStdString(path[i]->getName());
 
-                    //Add movies for each edge in the path
                     if (i < path.size() - 1) {
                         moviesList += "\n\nFilms Shared by " + QString::fromStdString(path[i]->getName()) + " and " + QString::fromStdString(path[i + 1]->getName()) + ": ";
 
@@ -231,7 +242,26 @@ void UI::run() {
 
             result += "\n";
 
-            resultLabel->setText(result);
+            //save full message
+            fullResultText = result;
+            fullResultText.replace("\n", "<br>");
+            currentCharIndex = 0;
+            resultLabel->setText(""); // clear old text
+
+            //clear previous connections so timer doesn't speed up
+            textRevealTimer->stop();
+            textRevealTimer->disconnect();
+
+            //appear letter by letter
+            QObject::connect(textRevealTimer, &QTimer::timeout, [=]() mutable {
+                if (currentCharIndex < fullResultText.length()) {
+                    resultLabel->setText(resultLabel->text() + QString(fullResultText[currentCharIndex]));
+                    currentCharIndex++;
+                } else {
+                    textRevealTimer->stop();
+                }
+            });
+            textRevealTimer->start(30); // 30 ms
 
             //update the stats
             QString statsText;
@@ -296,16 +326,25 @@ void UI::run() {
 
     //reset button functionality
     QObject::connect(clearButton, &QPushButton::clicked, [=]() {
-        actor1Input->clear();
-        actor2Input->clear();
-        resultLabel->setText("Result will appear here...");
-        scene->clear();
-    });
+    actor1Input->clear();
+    actor2Input->clear();
+
+    // stop any ongoing typewriter animation
+    textRevealTimer->stop();
+    textRevealTimer->disconnect(); // prevent old text from continuing
+
+    QString newLine = placeholderLines[rand() % placeholderLines.size()];
+    resultLabel->setText(newLine);
+    scene->clear();
+});
+
+
+    //
     actor1Input->setStyleSheet("background-color: #F5DEB3; color: #000; border: 1px solid #aaa;");
     actor2Input->setStyleSheet("background-color: #F5DEB3; color: #000; border: 1px solid #aaa;");
     searchButton->setStyleSheet("background-color: #DEB887; color: #000; padding: 5px;");
     clearButton->setStyleSheet("background-color: #DEB887; color: #000; padding: 5px;");
     bfsRadio->setStyleSheet("color: #000;");
     dijkstraRadio->setStyleSheet("color: #000;");
-    weightSelector->setStyleSheet("background-color: #F5DEB3; color: #000;");
+    weightSelector->setStyleSheet("background-color: #F5DEB3; color: #336; padding: 5px; border: 1px solid #aaa;");
 }

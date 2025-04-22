@@ -191,33 +191,32 @@ void UI::run() {
              label->setDefaultTextColor(Qt::black);
 
              if (i > 0) {
-    int x1 = lastCenter.x() + nodeSize / 2;
-    int y1 = lastCenter.y() + nodeSize / 2;
-    int x2 = x + nodeSize / 2;
-    int y2 = y + nodeSize / 2;
+                int x1 = lastCenter.x() + nodeSize / 2;
+                int y1 = lastCenter.y() + nodeSize / 2;
+                int x2 = x + nodeSize / 2;
+                int y2 = y + nodeSize / 2;
 
-    // Draw the line
-    scene->addLine(x1, y1, x2, y2, QPen(Qt::black));
+                //draw the line
+                scene->addLine(x1, y1, x2, y2, QPen(Qt::black));
 
-    // Find shared film count between path[i - 1] and path[i]
-    Actor* a1 = path[i - 1];
-    Actor* a2 = path[i];
+                //find shared film count
+                Actor* a1 = path[i - 1];
+                Actor* a2 = path[i];
 
-    int sharedCount = 0;
-    auto adjMap = a1->getAdjacent();
-    if (adjMap.find(a2) != adjMap.end()) {
-        sharedCount = adjMap[a2];
-    }
+                int sharedCount = 0;
+                auto adjMap = a1->getAdjacent();
+                if (adjMap.find(a2) != adjMap.end()) {
+                    sharedCount = adjMap[a2];
+                }
 
-    // Add label halfway on the line
-    int midX = (x1 + x2) / 2;
-    int midY = (y1 + y2) / 2;
+                //add label halfway on the line
+                int midX = (x1 + x2) / 2;
+                int midY = (y1 + y2) / 2;
 
-    QGraphicsTextItem* edgeLabel = scene->addText(QString::number(sharedCount) + " films");
-    edgeLabel->setPos(midX, midY - 10);
-    edgeLabel->setDefaultTextColor(Qt::darkGray);
-}
-
+                QGraphicsTextItem* edgeLabel = scene->addText(QString::number(sharedCount) + " films");
+                edgeLabel->setPos(midX, midY - 10);
+                edgeLabel->setDefaultTextColor(Qt::darkGray);
+            }
 
              lastCenter = QPoint(x, y);
          }

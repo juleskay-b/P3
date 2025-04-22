@@ -546,6 +546,7 @@ CMakeFiles/Project3.dir/UI.cpp.obj: C:/Users/julia/P3/UI.cpp \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/vadefs.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/wchar.h \
   C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/wctype.h \
+  C:/Qt/6.9.0/mingw_64/include/QtCore/QTimer \
   C:/Qt/6.9.0/mingw_64/include/QtCore/q17memory.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/q20functional.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/q20iterator.h \
@@ -668,6 +669,7 @@ CMakeFiles/Project3.dir/UI.cpp.obj: C:/Users/julia/P3/UI.cpp \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qtenvironmentvariables.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qtextstream.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qtformat_impl.h \
+  C:/Qt/6.9.0/mingw_64/include/QtCore/qtimer.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qtmetamacros.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qtnoop.h \
   C:/Qt/6.9.0/mingw_64/include/QtCore/qtpreprocessorsupport.h \
@@ -727,6 +729,7 @@ CMakeFiles/Project3.dir/UI.cpp.obj: C:/Users/julia/P3/UI.cpp \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QComboBox \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsEllipseItem \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsLineItem \
+  C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsPixmapItem \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsScene \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsTextItem \
   C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsView \
@@ -1562,6 +1565,8 @@ C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/sec_api/wchar_s.h:
 
+C:/Qt/6.9.0/mingw_64/include/QtCore/qtimer.h:
+
 C:/Qt/6.9.0/mingw_64/include/QtCore/qlogging.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/stdio.h:
@@ -1906,6 +1911,8 @@ C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/utility:
 
+C:/Qt/6.9.0/mingw_64/include/QtWidgets/QGraphicsPixmapItem:
+
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/variant:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/version:
@@ -1933,6 +1940,8 @@ C:/Qt/6.9.0/mingw_64/include/QtCore/qdarwinhelpers.h:
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/sec_api/string_s.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/stdarg.h:
+
+C:/Qt/6.9.0/mingw_64/include/QtCore/QTimer:
 
 C:/Qt/6.9.0/mingw_64/include/QtCore/q17memory.h:
 

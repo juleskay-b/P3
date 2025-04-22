@@ -9,8 +9,8 @@ Film::Film(int ID) {
     castSize = 0;
     cast = {};
     //Add information like year, other stuff if possible
-    year = 0;
-    name = "";
+    year = "unknown";
+    name = "unknown";
 }
 
 void Film::addActor(Actor* actor) {

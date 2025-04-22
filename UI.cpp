@@ -116,13 +116,10 @@ void UI::run() {
     scrollArea->setWidgetResizable(true);
     scrollArea->setAlignment(Qt::AlignTop);
     scrollArea->setMinimumHeight(200);
-    scrollArea->setStyleSheet("color: #336; background-color: #eee; padding: 10px; border: 1px solid #ccc;");
+    resultLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
     scrollArea->setWidget(resultLabel);
     rightPanel->addWidget(scrollArea);
     rightPanel->addStretch();
-    resultLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
-    rightPanel->addWidget(resultLabel);
-
 
     // === VISUAL PATH VIEW === //
     QGraphicsScene* scene = new QGraphicsScene();

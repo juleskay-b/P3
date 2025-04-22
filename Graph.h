@@ -37,6 +37,7 @@ public:
     void printActors(); //Testing insertion
     void printAdjacent(const string& name); //Testing edges
     void printFilms(const string& name); //Testing insertion
+    void printSharedFilms(const string& a1, const string& a2);
 
     //Stuff for data - how many actors and films are there total?
     unsigned int getFilmNum() const;

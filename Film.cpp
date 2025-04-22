@@ -46,14 +46,6 @@ void Actor::addEdge(Actor *actor) {
     }
 }
 
-void Film::setName(const string& name) {
-    this->name = name;
-}
-
-void Film::setYear(const string &year) {
-    this->year = year;
-}
-
 string Actor::getName() {
     return name;
 }

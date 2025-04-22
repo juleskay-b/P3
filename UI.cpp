@@ -114,9 +114,16 @@ void UI::run() {
     resultLabel->setWordWrap(true);
     resultLabel->setAlignment(Qt::AlignTop);
     resultLabel->setMinimumHeight(200);
-    resultLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
-    rightPanel->addWidget(resultLabel);
+    resultLabel->setStyleSheet("color: #336; background-color: #eee; padding: 10px; border: 1px solid #ccc;");
 
+    QScrollArea* scrollArea = new QScrollArea;
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setAlignment(Qt::AlignTop);
+    scrollArea->setMinimumHeight(200);
+    resultLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
+    scrollArea->setWidget(resultLabel);
+    rightPanel->addWidget(scrollArea);
+    rightPanel->addStretch();
 
     // === VISUAL PATH VIEW === //
     QGraphicsScene* scene = new QGraphicsScene();
@@ -201,24 +208,29 @@ void UI::run() {
             QString result = algoUsed + " Path:\n";
             QString moviesList;
             for (int i = 0; i < path.size(); ++i) {
+                    //Add actor to path
                     result += QString::fromStdString(path[i]->getName());
 
-                        if (i < path.size() - 1) {
-                            moviesList += "\nFilms Shared by " + QString::fromStdString(path[i]->getName()) + " and " + QString::fromStdString(path[i + 1]->getName()) + ": ";
+                    //Add movies for each edge in the path
+                    if (i < path.size() - 1) {
+                        moviesList += "\n\nFilms Shared by " + QString::fromStdString(path[i]->getName()) + " and " + QString::fromStdString(path[i + 1]->getName()) + ": ";
 
-                        for (Film* f : path[i]->getFilms()) {
-                            for (Film* f2 : path[i + 1]->getFilms()) {
-                                if (f == f2) {
-                                    moviesList += QString::fromStdString(f2->name) + " (" + QString::fromStdString(f2->year) + "), ";
-                                }
+                    for (Film* f : path[i]->getFilms()) {
+                        for (Film* f2 : path[i + 1]->getFilms()) {
+                            if (f == f2) {
+                                moviesList += QString::fromStdString(f2->name) + " (" + QString::fromStdString(f2->year) + "); ";
                             }
                         }
+                    }
                     }
 
                     if (i < path.size() - 1) result += " → ";
             }
 
-            result += "\n\n" + moviesList;
+            result += moviesList;
+
+            result += "\n";
+
             resultLabel->setText(result);
 
             //update the stats

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <chrono>
 #include <QGraphicsView>
+#include <QComboBox>
 #include <QGraphicsScene>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsLineItem>
@@ -21,6 +22,8 @@ UI::UI(Graph& g) : graph(g) {}
 void UI::run() {
     window.setWindowTitle("Star Fishing");
     window.resize(800, 500);
+    window.setStyleSheet("background-color: #D2CD95;");
+
 
     // ==== MAIN LAYOUT ==== (horizontal)
     QHBoxLayout* mainLayout = new QHBoxLayout();
@@ -44,6 +47,12 @@ void UI::run() {
     algoLayout->addWidget(dijkstraRadio);
     algoGroup->setLayout(algoLayout);
     leftPanel->addWidget(algoGroup);
+
+    //dropdown for weighting preference
+    QComboBox* weightSelector = new QComboBox();
+    weightSelector->addItem("Favor more shared films");   // moreMovies = true
+    weightSelector->addItem("Favor fewer shared films");  // moreMovies = false
+    leftPanel->addWidget(weightSelector);
 
     //stats label (placeholder for now)
     QLabel* statsLabel = new QLabel("Time to complete:\nTotal connections:\n");
@@ -78,17 +87,17 @@ void UI::run() {
     resultLabel->setWordWrap(true);
     resultLabel->setAlignment(Qt::AlignTop);
     resultLabel->setMinimumHeight(200);
-    resultLabel->setStyleSheet("color: #336; background-color: #eee; padding: 10px; border: 1px solid #ccc;");
+    resultLabel->setStyleSheet("color: #336; background-color: #F5DEB3; padding: 10px; border: 1px solid #aaa;");
     rightPanel->addWidget(resultLabel);
-    rightPanel->addStretch();
+
 
     // === VISUAL PATH VIEW === //
     QGraphicsScene* scene = new QGraphicsScene();
     QGraphicsView* view = new QGraphicsView(scene);
     view->setMinimumHeight(200);
-    view->setStyleSheet("background-color: white; border: 1px solid #ccc;");
+    view->setStyleSheet("background-color: #F5DEB3; color: #000; border: 1px solid #aaa;");
     rightPanel->addWidget(view);
-    rightPanel->addStretch();
+
 
     // ==== FINALIZE LAYOUT ==== //
     mainLayout->addLayout(leftPanel, 1);
@@ -106,6 +115,10 @@ void UI::run() {
         string actor1 = actor1Input->text().toStdString();
         string actor2 = actor2Input->text().toStdString();
 
+        //for initial drop-down weight selection
+        graph.setWeightType(weightSelector->currentIndex() == 0);
+
+
         //validate input
         if (!graph.isActor(actor1) || !graph.isActor(actor2)) {
             resultLabel->setText("One or both actors not found.");
@@ -118,8 +131,13 @@ void UI::run() {
         vector<Actor*> path;
         QString algoUsed;
 
+        QColor nodeColor;
+        QColor edgeColor;
+
         if (bfsRadio->isChecked()) {
             path = graph.BFSPath(actor1, actor2);
+            nodeColor = QColor("#4C9BE8");
+            edgeColor = QColor("#2E86C1");
             algoUsed = "BFS";
         }
         else if (dijkstraRadio->isChecked()) {
@@ -130,6 +148,8 @@ void UI::run() {
                 return;
             }
             path = graph.DijkstrasPath(a1, a2);
+            nodeColor = QColor("#A3B18A");
+            edgeColor = QColor("#5B7553");
             algoUsed = "Dijkstra";
         }
 
@@ -144,10 +164,29 @@ void UI::run() {
         }
         else {
             QString result = algoUsed + " Path:\n";
+            QString moviesList;
             for (int i = 0; i < path.size(); ++i) {
-                result += QString::fromStdString(path[i]->getName());
-                if (i < path.size() - 1) result += " → ";
+                    result += QString::fromStdString(path[i]->getName());
+
+                        if (i < path.size() - 1) {
+                            moviesList += "\nFilms Shared by " + QString::fromStdString(path[i]->getName()) + " and " + QString::fromStdString(path[i + 1]->getName()) + ": ";
+
+                        for (Film* f : path[i]->getFilms()) {
+                            for (Film* f2 : path[i + 1]->getFilms()) {
+                                if (f == f2) {
+                                    moviesList += QString::fromStdString(f2->name) + " (" + QString::fromStdString(f2->year) + "), ";
+                                }
+                            }
+                        }
+                    }
+
+                    if (i < path.size() - 1) result += " → ";
             }
+
+            result += moviesList;
+
+            result += "\n";
+
             resultLabel->setText(result);
 
             //update the stats
@@ -172,19 +211,40 @@ void UI::run() {
              int y = rand() % height;
 
              //draw node
-             scene->addEllipse(x, y, nodeSize, nodeSize, QPen(Qt::black), QBrush(QColor("#A3B18A")));
+             scene->addEllipse(x, y, nodeSize, nodeSize, QPen(Qt::black), QBrush(nodeColor));
 
              //actor name above the nodes
              QGraphicsTextItem* label = scene->addText(QString::fromStdString(path[i]->getName()));
              label->setPos(x, y - 20);
              label->setDefaultTextColor(Qt::black);
 
-             //draw line from previous node
              if (i > 0) {
-                 scene->addLine(lastCenter.x() + nodeSize / 2, lastCenter.y() + nodeSize / 2,
-                                x + nodeSize / 2, y + nodeSize / 2,
-                                QPen(Qt::black));
-             }
+                int x1 = lastCenter.x() + nodeSize / 2;
+                int y1 = lastCenter.y() + nodeSize / 2;
+                int x2 = x + nodeSize / 2;
+                int y2 = y + nodeSize / 2;
+
+                //draw the line
+                scene->addLine(x1, y1, x2, y2, QPen(edgeColor));
+
+                //find shared film count
+                Actor* a1 = path[i - 1];
+                Actor* a2 = path[i];
+
+                int sharedCount = 0;
+                auto adjMap = a1->getAdjacent();
+                if (adjMap.find(a2) != adjMap.end()) {
+                    sharedCount = adjMap[a2];
+                }
+
+                //add label halfway on the line
+                int midX = (x1 + x2) / 2;
+                int midY = (y1 + y2) / 2;
+
+                QGraphicsTextItem* edgeLabel = scene->addText(QString::number(sharedCount) + " films");
+                edgeLabel->setPos(midX, midY - 10);
+                edgeLabel->setDefaultTextColor(Qt::darkGray);
+            }
 
              lastCenter = QPoint(x, y);
          }
@@ -197,24 +257,17 @@ void UI::run() {
         resultLabel->setText("Result will appear here...");
         scene->clear();
     });
+    actor1Input->setStyleSheet("background-color: #F5DEB3; color: #000; border: 1px solid #aaa;");
+    actor2Input->setStyleSheet("background-color: #F5DEB3; color: #000; border: 1px solid #aaa;");
+    searchButton->setStyleSheet("background-color: #DEB887; color: #000; padding: 5px;");
+    clearButton->setStyleSheet("background-color: #DEB887; color: #000; padding: 5px;");
+    bfsRadio->setStyleSheet("color: #000;");
+    dijkstraRadio->setStyleSheet("color: #000;");
+    weightSelector->setStyleSheet("background-color: #F5DEB3; color: #000;");
 }
-
-
 
 
 //maybe useful later
-void UI::showActorFilms() {
-    string name;
-    cout << "Enter the actor's name: ";
-    getline(cin, name);
-
-    if (!graph.isActor(name)) {
-        cout << "Actor not found." << endl;
-    } else {
-        cout << "Films for " << name << ":" << endl;
-        graph.printFilms(name);
-    }
-}
 
 void UI::showCoStars() {
     string name;

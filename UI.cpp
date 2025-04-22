@@ -129,8 +129,13 @@ void UI::run() {
         vector<Actor*> path;
         QString algoUsed;
 
+        QColor nodeColor;
+        QColor edgeColor;
+
         if (bfsRadio->isChecked()) {
             path = graph.BFSPath(actor1, actor2);
+            nodeColor = QColor("#4C9BE8");
+            edgeColor = QColor("#2E86C1");
             algoUsed = "BFS";
         }
         else if (dijkstraRadio->isChecked()) {
@@ -141,6 +146,8 @@ void UI::run() {
                 return;
             }
             path = graph.DijkstrasPath(a1, a2);
+            nodeColor = QColor("#A3B18A");
+            edgeColor = QColor("#5B7553");
             algoUsed = "Dijkstra";
         }
 
@@ -183,7 +190,7 @@ void UI::run() {
              int y = rand() % height;
 
              //draw node
-             scene->addEllipse(x, y, nodeSize, nodeSize, QPen(Qt::black), QBrush(QColor("#A3B18A")));
+             scene->addEllipse(x, y, nodeSize, nodeSize, QPen(Qt::black), QBrush(nodeColor));
 
              //actor name above the nodes
              QGraphicsTextItem* label = scene->addText(QString::fromStdString(path[i]->getName()));
@@ -197,7 +204,7 @@ void UI::run() {
                 int y2 = y + nodeSize / 2;
 
                 //draw the line
-                scene->addLine(x1, y1, x2, y2, QPen(Qt::black));
+                scene->addLine(x1, y1, x2, y2, QPen(edgeColor));
 
                 //find shared film count
                 Actor* a1 = path[i - 1];

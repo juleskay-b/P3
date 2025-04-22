@@ -86,7 +86,14 @@ void UI::run() {
     resultLabel->setAlignment(Qt::AlignTop);
     resultLabel->setMinimumHeight(200);
     resultLabel->setStyleSheet("color: #336; background-color: #eee; padding: 10px; border: 1px solid #ccc;");
-    rightPanel->addWidget(resultLabel);
+
+    QScrollArea* scrollArea = new QScrollArea;
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setAlignment(Qt::AlignTop);
+    scrollArea->setMinimumHeight(200);
+    scrollArea->setStyleSheet("color: #336; background-color: #eee; padding: 10px; border: 1px solid #ccc;");
+    scrollArea->setWidget(resultLabel);
+    rightPanel->addWidget(scrollArea);
     rightPanel->addStretch();
 
     // === VISUAL PATH VIEW === //
@@ -157,15 +164,17 @@ void UI::run() {
             QString result = algoUsed + " Path:\n";
             QString moviesList;
             for (int i = 0; i < path.size(); ++i) {
+                    //Add actor to path
                     result += QString::fromStdString(path[i]->getName());
 
+                    //Add movies for each edge in the path
                     if (i < path.size() - 1) {
-                        moviesList += "\nFilms Shared by " + QString::fromStdString(path[i]->getName()) + " and " + QString::fromStdString(path[i + 1]->getName()) + ": ";
+                        moviesList += "\n\nFilms Shared by " + QString::fromStdString(path[i]->getName()) + " and " + QString::fromStdString(path[i + 1]->getName()) + ": ";
 
                     for (Film* f : path[i]->getFilms()) {
                         for (Film* f2 : path[i + 1]->getFilms()) {
                             if (f == f2) {
-                                moviesList += QString::fromStdString(f2->name) + " (" + QString::fromStdString(f2->year) + "), ";
+                                moviesList += QString::fromStdString(f2->name) + " (" + QString::fromStdString(f2->year) + "); ";
                             }
                         }
                     }

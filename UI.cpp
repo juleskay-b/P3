@@ -66,11 +66,15 @@ void UI::run() {
     QGraphicsScene* starScene = new QGraphicsScene();
     QGraphicsView* starView = new QGraphicsView(starScene);
     starView->setStyleSheet("background: transparent; border: none;");
-    starView->setFixedSize(200, 200); // size of the whole star area alloted
+    starView->setFixedSize(220, 220); // size of the whole star area alloted
+
+    //disable scroll bars thank goodness
+    starView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    starView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     QPixmap starPixmap("Images/Starfy.webp");
     QGraphicsPixmapItem* starItem = starScene->addPixmap(
-        starPixmap.scaled(140, 140, Qt::KeepAspectRatio, Qt::SmoothTransformation) //actual size of star
+        starPixmap.scaled(160, 160, Qt::KeepAspectRatio, Qt::SmoothTransformation) //actual size of star
     );
 
     //star positioning
@@ -292,21 +296,4 @@ void UI::run() {
     bfsRadio->setStyleSheet("color: #000;");
     dijkstraRadio->setStyleSheet("color: #000;");
     weightSelector->setStyleSheet("background-color: #F5DEB3; color: #000;");
-}
-
-
-//maybe useful later
-
-void UI::showCoStars() {
-    string name;
-    cout << "Enter the actor's name: ";
-    getline(cin, name);
-
-    if (!graph.isActor(name)) {
-        cout << "Actor not found." << endl;
-    }
-    else {
-        cout << "Co-Stars for " << name << ":" << endl;
-        graph.printAdjacent(name);
-    }
 }

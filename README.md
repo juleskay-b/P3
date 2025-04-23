@@ -14,4 +14,5 @@ https://www.kaggle.com/datasets/gsimonx37/letterboxd?select=movies.csv
 Save the image below and place in the folder named Images in the directory:
 
 Starfy Logo: 
-https://www.google.com/url?sa=i&url=https%3A%2F%2Fhero.fandom.com%2Fwiki%2FStarfy&psig=AOvVaw1u2sHlf_hNr8JValnxwXqH&ust=1745459207957000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCJCujrKE7YwDFQAAAAAdAAAAABAE
+![image](https://github.com/user-attachments/assets/d72c7fcf-5ceb-4d24-898a-f7055524da8b)
+
